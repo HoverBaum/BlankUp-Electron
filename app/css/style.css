@@ -1,6 +1,10 @@
+.fa {
+  transition: 0.3s all ease-out;
+}
 body,
 html {
   height: 100%;
+  font-family: 'Fira Mono', sans-serif;
 }
 .editors {
   height: 100%;
@@ -11,7 +15,8 @@ html {
   box-sizing: border-box;
 }
 .nav {
-  height: 2rem;
+  font-size: 1.25rem;
+  height: 2em;
   width: 100%;
   background-color: #45525f;
   cursor: pointer;
@@ -20,11 +25,11 @@ html {
   top: 0;
   left: 0;
   z-index: 1000;
-  opacity: 0.8;
   display: flex;
   flex-direction: row;
   color: #ecf0f0;
-  line-height: 2rem;
+  line-height: 2em;
+  box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.35);
 }
 .nav__title {
   flex-grow: 1;
@@ -32,9 +37,16 @@ html {
   -webkit-app-region: drag;
 }
 .nav__closer {
-  margin-right: 0.5rem;
-  margin-top: 0.4rem;
+  margin-right: 0.5em;
+  margin-top: 0.4em;
 }
 .nav__closer:hover {
   color: #d8676f;
+}
+.nav__menu {
+  margin-top: 0.4em;
+  margin-left: 0.5em;
+}
+.nav__menu:hover {
+  color: #5caef2;
 }
