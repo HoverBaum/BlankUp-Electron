@@ -1,0 +1,40 @@
+body,
+html {
+  height: 100%;
+}
+.editors {
+  height: 100%;
+}
+.editor {
+  height: 100%;
+  padding-top: 2rem;
+  box-sizing: border-box;
+}
+.nav {
+  height: 2rem;
+  width: 100%;
+  background-color: #45525f;
+  cursor: pointer;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: row;
+  color: #ecf0f0;
+  line-height: 2rem;
+}
+.nav__title {
+  flex-grow: 1;
+  text-align: center;
+  -webkit-app-region: drag;
+}
+.nav__closer {
+  margin-right: 0.5rem;
+  margin-top: 0.4rem;
+}
+.nav__closer:hover {
+  color: #d8676f;
+}

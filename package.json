@@ -2,18 +2,19 @@
   "name": "BlankUp-electron",
   "version": "1.0.0",
   "description": "BlankUp wrapped in Electron.",
-  "main": "main.js",
+  "main": "app/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "stylus": "node node_modules/stylus/bin/stylus styl/style.styl --out app/css --use url --with \"{limit: false}\" --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HoverBaum/BlankUp-Electron.git"
   },
   "keywords": [
-	  "Markdown",
-	  "editor",
-	  "Electron"
+    "Markdown",
+    "editor",
+    "Electron"
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
@@ -22,9 +23,11 @@
   },
   "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
   "devDependencies": {
-    "electron-prebuilt": "^1.2.0"
+    "electron-prebuilt": "^1.2.0",
+    "electron-reload": "^1.0.0"
   },
   "dependencies": {
-    "BlankUp": "^0.1.0"
+    "BlankUp": "^0.1.1",
+    "font-awesome": "^4.6.3"
   }
 }

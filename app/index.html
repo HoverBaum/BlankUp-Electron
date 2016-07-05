@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World!</title>
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css"
+</head>
+
+<body>
+	<nav class="nav">
+		<span class="nav__title">Titel</span>
+		<i class="fa fa-close nav__closer" id="closeApp"></i>
+	</nav>
+
+	<div class="editors">
+		<div id="wrapper" class="editor">
+
+		</div>
+	</div>
+
+</body>
+
+<script>
+
+	require('BlankUp')
+	const editor = BlankUp(document.querySelector('#wrapper'))
+
+	//Toggle preview with Ctrl + M
+	let previewState = false
+	window.addEventListener('keypress', (e) => {
+		if(e.ctrlKey === true && e.keyCode === 10 && e.shiftKey === true) {
+			previewState = !previewState
+			editor.previewVisible(previewState)
+		}
+	})
+
+	document.querySelector('#closeApp').addEventListener('click', () => {
+		window.close()
+	})
+</script>
+
+</html>
