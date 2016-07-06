@@ -39,44 +39,6 @@ audio:not([controls]),
 [hidden] {
   display: none;
 }
-.menu,
-.menu__nested {
-  display: none;
-  position: fixed;
-  top: 2rem;
-  left: 0.5rem;
-  z-index: 1001;
-  padding: 0;
-  margin: 0;
-  font-family: sans-serif;
-  font-size: 1rem;
-  box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.5);
-  border: 1px solid #3d4954;
-}
-.menu__item,
-.menu__neste-item {
-  list-style: none;
-  background-color: #fff;
-  padding: 0.4rem;
-  padding-left: 1rem;
-  cursor: pointer;
-  transition: 0.1s all ease-out;
-  position: relative;
-  overflow: hidden;
-  min-width: 8rem;
-}
-.menu__item:hover,
-.menu__neste-item:hover {
-  background-color: #5caef2;
-  overflow: visible;
-}
-.menu__nested {
-  display: block;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  padding-left: 0;
-}
 .fa {
   transition: 0.3s all ease-out;
 }
@@ -84,13 +46,16 @@ body,
 html {
   height: 100%;
   font-family: 'Fira Mono', sans-serif;
+  background-color: #3d4954;
+}
+main {
+  height: 100%;
 }
 .editors {
   height: 100%;
 }
 .editor {
   height: 100%;
-  padding-top: 2rem;
   box-sizing: border-box;
 }
 .nav {

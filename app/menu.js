@@ -1,57 +1,136 @@
-const menuConfig = [{
-    title: 'menu item',
-    onClick: () => {
-        console.log('item');
-    }
+let template = [{
+    label: 'Edit',
+    submenu: [{
+        label: 'Undo',
+        accelerator: 'CmdOrCtrl+Z',
+        role: 'undo'
+    }, {
+        label: 'Redo',
+        accelerator: 'Shift+CmdOrCtrl+Z',
+        role: 'redo'
+    }, {
+        type: 'separator'
+    }, {
+        label: 'Cut',
+        accelerator: 'CmdOrCtrl+X',
+        role: 'cut'
+    }, {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C',
+        role: 'copy'
+    }, {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V',
+        role: 'paste'
+    }, {
+        label: 'Select All',
+        accelerator: 'CmdOrCtrl+A',
+        role: 'selectall'
+    }]
 }, {
-    title: 'parent',
-    children: [{
-        title: 'child',
-        onClick: () => {
-            console.log('child');
+    label: 'View',
+    submenu: [{
+        label: 'Reload',
+        accelerator: 'CmdOrCtrl+R',
+        click: function(item, focusedWindow) {
+            if (focusedWindow) {
+                // on reload, start fresh and close any old
+                // open secondary windows
+                if (focusedWindow.id === 1) {
+                    BrowserWindow.getAllWindows().forEach(function(win) {
+                        if (win.id > 1) {
+                            win.close()
+                        }
+                    })
+                }
+                focusedWindow.reload()
+            }
         }
     }, {
-        title: 'child2',
-        onClick: () => {
-            console.log('child 2');
+        label: 'Toggle Full Screen',
+        accelerator: (function() {
+            if (process.platform === 'darwin') {
+                return 'Ctrl+Command+F'
+            } else {
+                return 'F11'
+            }
+        })(),
+        click: function(item, focusedWindow) {
+            if (focusedWindow) {
+                focusedWindow.setFullScreen(!focusedWindow.isFullScreen())
+            }
+        }
+    }, {
+        label: 'Toggle Developer Tools',
+        accelerator: (function() {
+            if (process.platform === 'darwin') {
+                return 'Alt+Command+I'
+            } else {
+                return 'Ctrl+Shift+I'
+            }
+        })(),
+        click: function(item, focusedWindow) {
+            if (focusedWindow) {
+                focusedWindow.toggleDevTools()
+            }
+        }
+    }]
+}, {
+    label: 'Help',
+    role: 'help',
+    submenu: [{
+        label: 'Learn More',
+        click: function() {
+            electron.shell.openExternal('https://github.com/HoverBaum/BlankUp-Electron')
         }
     }]
 }]
 
-function displayMenu(menuElement) {
-	menuConfig.forEach((menuItem) => {
-        let li = document.createElement('li')
-        li.classList.add('menu__item')
-        li.innerHTML = menuItem.title
-        if (menuItem.onClick) {
-            li.addEventListener('click', menuItem.onClick)
-        }
-        if (menuItem.children) {
-            li.innerHTML += '<i class="fa fa-angle-right" aria-hidden="true" style="float:right;"></i>'
-            let ul = document.createElement('ul')
-            ul.classList.add('menu__nested')
-            menuItem.children.forEach((child) => {
-                let liChild = document.createElement('li')
-                liChild.classList.add('menu__neste-item')
-                liChild.innerHTML = child.title
-                if (child.onClick) {
-                    liChild.addEventListener('click', child.onClick)
-                }
-                ul.appendChild(liChild)
-            })
-            li.appendChild(ul)
-        }
-        menuElement.appendChild(li)
+
+if (process.platform === 'darwin') {
+    const name = electron.app.getName()
+    template.unshift({
+        label: name,
+        submenu: [{
+            label: `About ${name}`,
+            role: 'about'
+        }, {
+            type: 'separator'
+        }, {
+            label: 'Services',
+            role: 'services',
+            submenu: []
+        }, {
+            type: 'separator'
+        }, {
+            label: `Hide ${name}`,
+            accelerator: 'Command+H',
+            role: 'hide'
+        }, {
+            label: 'Hide Others',
+            accelerator: 'Command+Alt+H',
+            role: 'hideothers'
+        }, {
+            label: 'Show All',
+            role: 'unhide'
+        }, {
+            type: 'separator'
+        }, {
+            label: 'Quit',
+            accelerator: 'Command+Q',
+            click: function() {
+                app.quit()
+            }
+        }]
+    })
+
+    // Window menu.
+    template[3].submenu.push({
+        type: 'separator'
+    }, {
+        label: 'Bring All to Front',
+        role: 'front'
     })
 }
 
-const setupMenu = (menuElement, toggleElement) => {
-	displayMenu(menuElement)
-	let menuVisible = false
-	toggleElement.addEventListener('click', () => {
-		menuVisible = !menuVisible
-		menuElement.style.display = menuVisible ? 'block' : 'none'
-	})
-}
-
-module.exports = setupMenu
+module.exports = template

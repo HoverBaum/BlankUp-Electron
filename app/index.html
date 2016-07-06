@@ -3,50 +3,16 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Hello World!</title>
+	<title>BlankUp</title>
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css" </head>
 
 	<body>
 
-		<!-- Menu -->
-		<ul class="menu" id="menu">
-			<!-- Reference for menu
-		<li class="menu__item">
-			Preferences
-		</li>
-		<li class="menu__item">
-			Other <i class="fa fa-angle-right" aria-hidden="true" style="float:right;"></i>
-			<ul class="menu__nested">
-				<li class="menu__neste-item">Nested</li>
-				<li class="menu__neste-item">two</li>
-			</ul>
-		</li>
-	End reference -->
-		</ul>
-		<!-- END Menu -->
-
-		<!-- Navigation -->
-		<nav class="nav">
-			<i class="fa fa-bars nav__menu" id="navToggle">
-		</i>
-
-			<span class="nav__title" id="title">Titel</span>
-			<i class="fa fa-close nav__closer" id="closeApp"></i>
-		</nav>
-		<!-- END Navigation -->
-
-		<div class="editors">
-			<div id="wrapper" class="editor">
-
-			</div>
-		</div>
-
 	</body>
 
 	<script>
 		require('BlankUp')
-		const editor = BlankUp(document.querySelector('#wrapper'))
 
 		let currentFile = null
 
@@ -65,18 +31,10 @@
 				const markdown = editor.getMarkdown()
 				const fs = require('fs')
 				fs.writeFile(currentFile.path, markdown, () => {
-					
+
 				})
 			}
 		})
-
-		//Close the app when X button is clicked.
-		document.querySelector('#closeApp').addEventListener('click', () => {
-			window.close()
-		})
-
-		const menuCreator = require('./menu')
-		menuCreator(document.querySelector('#menu'), document.querySelector('#navToggle'))
 
 		//When a file is dropped in use that.
 		document.ondragover = document.ondrop = (ev) => {
@@ -100,5 +58,6 @@
 		}
 
 	</script>
+	<script src="js/app.js"></script>
 
 </html>

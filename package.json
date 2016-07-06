@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "BlankUp": "^0.1.1",
+    "choo": "^3.0.0",
     "font-awesome": "^4.6.3"
   }
 }
