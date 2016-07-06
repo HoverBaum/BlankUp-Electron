@@ -40,7 +40,7 @@
 		document.ondragover = document.ondrop = (ev) => {
 			ev.preventDefault()
 		}
-		document.body.ondrop = (ev) => {
+		/*document.body.ondrop = (ev) => {
 			const fs = require('fs')
 			currentFile = ev.dataTransfer.files[0]
 			const name = currentFile.name
@@ -55,7 +55,7 @@
 				editor.setMarkdown(data)
 			})
 			ev.preventDefault()
-		}
+		}*/
 
 	</script>
 	<script src="js/app.js"></script>

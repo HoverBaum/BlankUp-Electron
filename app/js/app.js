@@ -25,14 +25,21 @@ function createNewEditor() {
 
 app.model({
     state: {
-        editors: [newEditor]
+        editors: []
     },
     reducers: {
-        addEditor: (data, state) => {
-			state.editors.concet([createNewEditor()])
-			return state
+        addEditor: (data, state) => ({
+			editors: state.editors.concat([createNewEditor()])
+		})
+    },
+	subscriptions: [
+		(state, send, done) => {
+			document.body.ondrop = (ev) => {
+				ev.preventDefault()
+				send('addEditor')
+			}
 		}
-    }
+	]
 })
 
 const mainView = (state, prev, send) => html`
