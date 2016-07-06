@@ -9,25 +9,33 @@
 </head>
 
 <body>
-	<ul class="menu">
+
+	<!-- Menu -->
+	<ul class="menu" id="menu">
+	<!-- Reference for menu
 		<li class="menu__item">
 			Preferences
 		</li>
 		<li class="menu__item">
-			Other
+			Other <i class="fa fa-angle-right" aria-hidden="true" style="float:right;"></i>
 			<ul class="menu__nested">
 				<li class="menu__neste-item">Nested</li>
 				<li class="menu__neste-item">two</li>
 			</ul>
 		</li>
+	End reference -->
 	</ul>
+	<!-- END Menu -->
+
+	<!-- Navigation -->
 	<nav class="nav">
-		<i class="fa fa-bars nav__menu">
+		<i class="fa fa-bars nav__menu" id="navToggle">
 		</i>
 
 		<span class="nav__title">Titel</span>
 		<i class="fa fa-close nav__closer" id="closeApp"></i>
 	</nav>
+	<!-- END Navigation -->
 
 	<div class="editors">
 		<div id="wrapper" class="editor">
@@ -51,9 +59,15 @@
 		}
 	})
 
+	//Close the app when X button is clicked.
 	document.querySelector('#closeApp').addEventListener('click', () => {
 		window.close()
 	})
+
+	const menuCreator = require('./menu')
+	menuCreator(document.querySelector('#menu'), document.querySelector('#navToggle'))
+
+
 </script>
 
 </html>

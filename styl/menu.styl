@@ -1,17 +1,22 @@
 @require 'colors'
 
 .menu
+	display: none
 	position: fixed
 	top: 2rem
 	left: 0.5rem
 	z-index: 1001
 	padding: 0
 	margin: 0
+	font-family: sans-serif
+	font-size: 1rem
+	box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.5)
+	border 1px solid backgroundBlue
 
 .menu__item
 	list-style: none
-	background-color: whiteBlue
-	padding: 0.7rem 1.5rem
+	background-color: #fff
+	padding: 0.4rem
 	padding-left: 1rem
 	cursor: pointer
 	transition: 0.1s all ease-out
@@ -23,6 +28,7 @@
 		overflow: visible
 
 .menu__nested
+	@extend .menu
 	position: absolute
 	left: 100%
 	top: 0
@@ -30,4 +36,3 @@
 
 .menu__neste-item
 	@extend .menu__item
-	background-color: lighten(whiteBlue, 60%)
