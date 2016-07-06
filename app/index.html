@@ -5,14 +5,13 @@
 	<meta charset="UTF-8">
 	<title>Hello World!</title>
 	<link rel="stylesheet" href="css/style.css" />
-	<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css"
-</head>
+	<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css" </head>
 
-<body>
+	<body>
 
-	<!-- Menu -->
-	<ul class="menu" id="menu">
-	<!-- Reference for menu
+		<!-- Menu -->
+		<ul class="menu" id="menu">
+			<!-- Reference for menu
 		<li class="menu__item">
 			Preferences
 		</li>
@@ -24,50 +23,82 @@
 			</ul>
 		</li>
 	End reference -->
-	</ul>
-	<!-- END Menu -->
+		</ul>
+		<!-- END Menu -->
 
-	<!-- Navigation -->
-	<nav class="nav">
-		<i class="fa fa-bars nav__menu" id="navToggle">
+		<!-- Navigation -->
+		<nav class="nav">
+			<i class="fa fa-bars nav__menu" id="navToggle">
 		</i>
 
-		<span class="nav__title">Titel</span>
-		<i class="fa fa-close nav__closer" id="closeApp"></i>
-	</nav>
-	<!-- END Navigation -->
+			<span class="nav__title" id="title">Titel</span>
+			<i class="fa fa-close nav__closer" id="closeApp"></i>
+		</nav>
+		<!-- END Navigation -->
 
-	<div class="editors">
-		<div id="wrapper" class="editor">
+		<div class="editors">
+			<div id="wrapper" class="editor">
 
+			</div>
 		</div>
-	</div>
 
-</body>
+	</body>
 
-<script>
+	<script>
+		require('BlankUp')
+		const editor = BlankUp(document.querySelector('#wrapper'))
 
-	require('BlankUp')
-	const editor = BlankUp(document.querySelector('#wrapper'))
+		let currentFile = null
 
-	//Toggle preview with Ctrl + M
-	let previewState = false
-	window.addEventListener('keypress', (e) => {
-		if(e.ctrlKey === true && e.keyCode === 10 && e.shiftKey === true) {
-			previewState = !previewState
-			editor.previewVisible(previewState)
+		let previewState = false
+		window.addEventListener('keypress', (e) => {
+
+			//Toggle preview with Ctrl + M
+			if (e.ctrlKey === true && e.keyCode === 10 && e.shiftKey === true) {
+				previewState = !previewState
+				editor.previewVisible(previewState)
+			}
+
+			//Save the file with Ctrl + S
+			if (e.ctrlKey === true && e.keyCode === 19) {
+				if(currentFile === null) return
+				const markdown = editor.getMarkdown()
+				const fs = require('fs')
+				fs.writeFile(currentFile.path, markdown, () => {
+					
+				})
+			}
+		})
+
+		//Close the app when X button is clicked.
+		document.querySelector('#closeApp').addEventListener('click', () => {
+			window.close()
+		})
+
+		const menuCreator = require('./menu')
+		menuCreator(document.querySelector('#menu'), document.querySelector('#navToggle'))
+
+		//When a file is dropped in use that.
+		document.ondragover = document.ondrop = (ev) => {
+			ev.preventDefault()
 		}
-	})
+		document.body.ondrop = (ev) => {
+			const fs = require('fs')
+			currentFile = ev.dataTransfer.files[0]
+			const name = currentFile.name
 
-	//Close the app when X button is clicked.
-	document.querySelector('#closeApp').addEventListener('click', () => {
-		window.close()
-	})
+			//Made sure it is a markdwon file.
+			if(!/.md$/.test(name)) {
+				return
+			}
+			document.querySelector('#title').innerHTML = name
+			const filePath = currentFile.path
+			fs.readFile(filePath, 'utf8', (err, data) => {
+				editor.setMarkdown(data)
+			})
+			ev.preventDefault()
+		}
 
-	const menuCreator = require('./menu')
-	menuCreator(document.querySelector('#menu'), document.querySelector('#navToggle'))
-
-
-</script>
+	</script>
 
 </html>
