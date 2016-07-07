@@ -42,55 +42,30 @@ audio:not([controls]),
 .fa {
   transition: 0.3s all ease-out;
 }
-body,
-html {
-  height: 100%;
+body {
   font-family: 'Fira Mono', sans-serif;
   background-color: #3d4954;
 }
-main {
-  height: 100%;
+.editor-nav {
+  background-color: #2b333b;
+  height: 2rem;
+  box-shadow: inset 0px -1px 3px 0px rgba(0,0,0,0.4);
 }
-.editors {
-  height: 100%;
-}
-.editor {
-  height: 100%;
-  box-sizing: border-box;
-}
-.nav {
-  font-size: 1.25rem;
-  height: 2em;
-  width: 100%;
-  background-color: #45525f;
-  cursor: pointer;
-  position: fixed;
-  display: block;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  display: flex;
-  flex-direction: row;
+.editor-nav__tab {
   color: #ecf0f0;
-  line-height: 2em;
-  box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.35);
+  font-size: 0.7rem;
+  width: 10rem;
+  padding-right: 1.5rem;
+  padding-left: 0.5rem;
+  height: 2rem;
+  overflow: hidden;
+  line-height: 1rem;
+  line-height: 2rem;
+  display: inline-block;
+  cursor: pointer;
+  box-sizing: border-box;
+  word-break: break-all;
 }
-.nav__title {
-  flex-grow: 1;
-  text-align: center;
-  -webkit-app-region: drag;
-}
-.nav__closer {
-  margin-right: 0.5em;
-  margin-top: 0.4em;
-}
-.nav__closer:hover {
-  color: #d8676f;
-}
-.nav__menu {
-  margin-top: 0.4em;
-  margin-left: 0.5em;
-}
-.nav__menu:hover {
-  color: #5caef2;
+.editor-nav__tab_active {
+  border-bottom: 2px solid #5caef2;
 }
