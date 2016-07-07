@@ -33,8 +33,12 @@ body
 	border-bottom: 2px solid blue
 
 .editor-nav__tab-close-icon
+	display: none
 	position: absolute
 	top: 0.5rem
 	right: 0.4rem
 	&:hover
 		color: red
+
+.editor-nav__tab:hover .editor-nav__tab-close-icon
+	display: block

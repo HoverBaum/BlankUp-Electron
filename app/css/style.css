@@ -71,10 +71,14 @@ body {
   border-bottom: 2px solid #5caef2;
 }
 .editor-nav__tab-close-icon {
+  display: none;
   position: absolute;
   top: 0.5rem;
   right: 0.4rem;
 }
 .editor-nav__tab-close-icon:hover {
   color: #d8676f;
+}
+.editor-nav__tab:hover .editor-nav__tab-close-icon {
+  display: block;
 }
