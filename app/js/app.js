@@ -5,10 +5,10 @@ const choo = require('choo')
 const html = require('choo/html')
 const app = choo({
     onStateChange(action, state, prev, caller, createSend) {
-        console.log('newState\n', state);
+        console.log('newState\n', state)
     },
     onAction(action, state, name, caller, createSend) {
-        console.log(`action ${name}\n`, action);
+        console.log(`action ${name}\n`, action)
     }
 })
 
