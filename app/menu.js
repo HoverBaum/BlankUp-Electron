@@ -3,12 +3,12 @@ const dialog = require('electron').dialog
 let template = [{
     label: 'File',
     submenu: [{
-        label: 'Close current',
-        accelerator: 'CmdOrCtrl+W',
-        click: function(item, focusedWindow) {
-            focusedWindow.webContents.send('closeCurrentEditor')
-        }
-    }, {
+		label: 'New',
+		accelerator: ' CmdOrCtrl+N',
+		click: function(item, focusedWindow) {
+			focusedWindow.webContents.send('newFile')
+		}
+	}, {
         label: 'Open',
         accelerator: 'CmdOrCtrl+O',
         click: function(item, focusedWindow) {
@@ -22,7 +22,19 @@ let template = [{
                 if (files) focusedWindow.webContents.send('openFiles', files)
             })
         }
-    }]
+    }, {
+        label: 'Close current',
+        accelerator: 'CmdOrCtrl+W',
+        click: function(item, focusedWindow) {
+            focusedWindow.webContents.send('closeCurrentEditor')
+        }
+    }, {
+		label: 'Save',
+		accelerator: 'CmdOrCtrl+S',
+		click: function(item, focusedWindow) {
+			focusedWindow.webContents.send('saveCurrentEditor')
+		}
+	}]
 }, {
     label: 'Edit',
     submenu: [{

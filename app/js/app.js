@@ -4,16 +4,34 @@ const ipc = require('electron').ipcRenderer
 const choo = require('choo')
 const html = require('choo/html')
 const app = choo({
-	onStateChange(action, state, prev, caller, createSend) {
-		console.log('newState\n', state);
-	},
-	onAction(action, state, name, caller, createSend) {
-		console.log(`action ${name}\n`, action);
-	}
+    onStateChange(action, state, prev, caller, createSend) {
+        console.log('newState\n', state);
+    },
+    onAction(action, state, name, caller, createSend) {
+        console.log(`action ${name}\n`, action);
+    }
 })
 
+//FIXME Editor looses focus upon input...
+//FIXME Can't click below editor to get into it.
+
 const generateId = () => {
-	return (Date.now() + Math.random().toString(36).substr(2, 9)).toUpperCase()
+    return (Date.now() + Math.random().toString(36).substr(2, 9)).toUpperCase()
+}
+
+const saveCurrentEditorToFile = (action, state, send) => {
+    const editor = state.editors.find(editor => editor.active)
+	if(editor.filePath && editor.filePath !== null) {
+		fs.writeFile(editor.filePath, editor.BlankUp.getMarkdown(), (err) => {
+			if(err) {
+				//TODO Error handling
+				return
+			}
+			send('setEditorUnchanged', editor.id, () => {})
+		})
+	} else {
+
+	}
 }
 
 /**
@@ -22,29 +40,29 @@ const generateId = () => {
  *   @return {Obejct}       - A new editor.
  */
 function createNewEditor(infos) {
-	const newEditor = {
-		active: infos.active || false,
-		changed: false,
-		filePath: infos.filePath || null,
-		name: infos.name || 'untitled',
-		id: generateId()
-	}
-	let div = document.createElement('div')
-	div.style.height = '100%'
-	document.body.appendChild(div)
-	newEditor.BlankUp = BlankUp(div)
-	newEditor.BlankUp.setMarkdown(infos.markdown || '')
-	newEditor.BlankUp.on('change', (newValue) => {
-		document.body.dispatchEvent(new CustomEvent('editorChanged', {
-			detail: {
-				id: newEditor.id,
-				newValue
-			}
-		}))
-	})
-	newEditor.editor = div
-	document.body.removeChild(div)
-	return newEditor
+    const newEditor = {
+        active: infos.active || false,
+        changed: false,
+        filePath: infos.filePath || null,
+        name: infos.name || 'untitled',
+        id: generateId()
+    }
+    let div = document.createElement('div')
+    div.style.height = '100%'
+    document.body.appendChild(div)
+    newEditor.BlankUp = BlankUp(div)
+    newEditor.BlankUp.setMarkdown(infos.markdown || '')
+    newEditor.BlankUp.on('change', (newValue) => {
+        document.body.dispatchEvent(new CustomEvent('editorChanged', {
+            detail: {
+                id: newEditor.id,
+                newValue
+            }
+        }))
+    })
+    newEditor.editor = div
+    document.body.removeChild(div)
+    return newEditor
 }
 
 app.model({
@@ -53,114 +71,138 @@ app.model({
     },
     reducers: {
         addEditor: (data, state) => {
-			return Object.assign({}, state, {
-				editors: state.editors.map(editor => {
-					editor.active = false
-					return editor
-				})
-				.concat([createNewEditor({
-					name: data.name,
-					filePath: data.filePath,
-					markdown: data.markdown,
-					active: true
-				})])
-			})
-		},
-		setEditorActive: (id, state) => {
-			return Object.assign({}, state, {
-				editors: state.editors.map(editor => {
-					if(editor.id === id) {
-						editor.active = true
-					} else {
-						editor.active = false
-					}
-					return editor
-				})
-			})
-		},
-		closeCurrentEditor: (data, state) => {
-			const newState = Object.assign({}, state, {
-				editors: state.editors.filter(editor => editor.active === false)
-			})
-			if(newState.editors.length >= 1) {
-				newState.editors[0].active = true
-			}
-			return newState
-		},
-		closeEditor: (id, state) => {
-			const newState = Object.assign({}, state, {
-				editors: state.editors.filter(editor => editor.id !== id)
-			})
-			if(newState.editors.length >= 1 && newState.editors.every(editor => !editor.active)) {
-				newState.editors[0].active = true
-			}
-			return newState
-		},
-		setEditorChanged: (id, state) => {
-			return Object.assign({}, state, {
-				editors: state.editors.map(editor => {
-					if(editor.id === id) {
-						editor.changed = true
-					}
-					return editor
-				})
-			})
-		}
+            return Object.assign({}, state, {
+                editors: state.editors.map(editor => {
+                        editor.active = false
+                        return editor
+                    })
+                    .concat([createNewEditor({
+                        name: data.name,
+                        filePath: data.filePath,
+                        markdown: data.markdown,
+                        active: true
+                    })])
+            })
+        },
+        setEditorActive: (id, state) => {
+            return Object.assign({}, state, {
+                editors: state.editors.map(editor => {
+                    if (editor.id === id) {
+                        editor.active = true
+                    } else {
+                        editor.active = false
+                    }
+                    return editor
+                })
+            })
+        },
+        closeCurrentEditor: (data, state) => {
+            const newState = Object.assign({}, state, {
+                editors: state.editors.filter(editor => editor.active === false)
+            })
+            if (newState.editors.length >= 1) {
+                newState.editors[0].active = true
+            }
+            return newState
+        },
+        closeEditor: (id, state) => {
+            const newState = Object.assign({}, state, {
+                editors: state.editors.filter(editor => editor.id !== id)
+            })
+            if (newState.editors.length >= 1 && newState.editors.every(editor => !editor.active)) {
+                newState.editors[0].active = true
+            }
+            return newState
+        },
+        setEditorChanged: (id, state) => {
+            return Object.assign({}, state, {
+                editors: state.editors.map(editor => {
+                    if (editor.id === id) {
+                        editor.changed = true
+                    }
+                    return editor
+                })
+            })
+        },
+        setEditorUnchanged: (id, state) => {
+            return Object.assign({}, state, {
+                editors: state.editors.map(editor => {
+                    if (editor.id === id) {
+                        editor.changed = false
+                    }
+                    return editor
+                })
+            })
+        }
     },
-	subscriptions: [
-		(send, done) => {
-			window.ondrop = (ev) => {
-				ev.preventDefault()
-				for (var key in ev.dataTransfer.files) {
-					if (ev.dataTransfer.files.hasOwnProperty(key)) {
-						const file = ev.dataTransfer.files[key]
-						let name = file.name
+	effects: {
+        saveCurrentEditor: saveCurrentEditorToFile
+    },
+    subscriptions: [
+        (send, done) => {
+            window.ondrop = (ev) => {
+                ev.preventDefault()
+                for (var key in ev.dataTransfer.files) {
+                    if (ev.dataTransfer.files.hasOwnProperty(key)) {
+                        const file = ev.dataTransfer.files[key]
+                        let name = file.name
 
-						//Made sure it is a markdwon file.
-						if(!/.md$/.test(name)) {
-							return
-						}
-						name = name.replace(/.md$/, '')
-						const filePath = file.path
-						fs.readFile(filePath, 'utf8', (err, data) => {
-							send('addEditor', {
-								markdown: data,
-								name,
-								filePath
-							}, () => {})
-						})
-					}
-				}
-			}
-		},
+                        //Made sure it is a markdwon file.
+                        if (!/.md$/.test(name)) {
+                            return
+                        }
+                        name = name.replace(/.md$/, '')
+                        const filePath = file.path
+                        fs.readFile(filePath, 'utf8', (err, data) => {
+                            send('addEditor', {
+                                markdown: data,
+                                name,
+                                filePath
+                            }, () => {})
+                        })
+                    }
+                }
+            }
+        },
+        (send, done) => {
+            ipc.on('closeCurrentEditor', () => {
+                send('closeCurrentEditor', () => {})
+            })
+        },
+        (send, done) => {
+            ipc.on('openFiles', (e, files) => {
+                files.forEach(filePath => {
+                    fs.readFile(filePath, 'utf8', (err, markdown) => {
+                        const data = {
+                            filePath,
+                            name: path.parse(filePath).name,
+                            markdown
+                        }
+                        send('addEditor', data, () => {})
+                    })
+                })
+            })
+        },
+        (send, done) => {
+            document.body.addEventListener('editorChanged', (infos) => {
+                send('setEditorChanged', infos.detail.id, () => {})
+            })
+        },
+        (send, done) => {
+            ipc.on('saveCurrentEditor', () => {
+                send('saveCurrentEditor', () => {})
+            })
+        },
 		(send, done) => {
-			ipc.on('closeCurrentEditor', () => {
-				send('closeCurrentEditor', () => {})
-			})
-		},
-		(send, done) => {
-			ipc.on('openFiles', (e, files) => {
-				files.forEach(filePath => {
-					fs.readFile(filePath, 'utf8', (err, markdown) => {
-						const data = {
-							filePath,
-							name: path.parse(filePath).name,
-							markdown
-						}
-						send('addEditor', data, () => {})
-					})
-				})
-			})
-		},
-		(send, done) => {
-			document.body.addEventListener('editorChanged', (infos) => {
-				send('setEditorChanged', infos.detail.id, () => {})
+			ipc.on('newFile', () => {
+				const editor = createNewEditor({})
+				send('addEditor', editor, () => {})
 			})
 		}
-	]
+    ]
 })
 
-const mainView = (state, prev, send) => html`
+const mainView = (state, prev, send) => html `
   <main>
   	<nav class="editor-nav" style=${state.editors.length === 0 ? 'display: none;' : ""}>
 		<ul>

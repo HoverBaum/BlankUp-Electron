@@ -1,11 +1,6 @@
 BlankUp wrapped in Electron. Markdown Editor with clarity +1
 
 Extremely incomplete version.
+Also clone will probably be broken right now, as BlankUp which is its own package has some unpublished changes that are needed to make this run.
 
-Can currently drag in a file, edit it and save using 'Ctrl + S'. Toggle preveiw with "Ctrl + Shift + M".
-
-## Roadmap
-
-- [ ] Use Choo as a framework
-- [ ] Create a posibility to have multiple files open
-- [ ] Have a menu that can do things
+Look for something working at the End of July.
