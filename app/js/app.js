@@ -46,11 +46,15 @@ app.model({
     reducers: {
         addEditor: (data, state) => {
 			return Object.assign({}, state, {
-				editors: state.editors.concat([createNewEditor({
+				editors: state.editors.map(editor => {
+					editor.active = false
+					return editor
+				})
+				.concat([createNewEditor({
 					name: data.name,
 					filePath: data.filePath,
 					markdown: data.markdown,
-					active: state.editors.length === 0 ? true : false
+					active: true
 				})])
 			})
 		},
