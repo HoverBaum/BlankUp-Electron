@@ -1,4 +1,6 @@
 const fs = require('fs')
+const path = require('path')
+const ipc = require('electron').ipcRenderer
 const choo = require('choo')
 const html = require('choo/html')
 const app = choo({
@@ -60,6 +62,15 @@ app.model({
 					return editor
 				})
 			})
+		},
+		closeCurrentEditor: (data, state) => {
+			const newState = Object.assign({}, state, {
+				editors: state.editors.filter(editor => editor.active === false)
+			})
+			if(newState.editors.length >= 1) {
+				newState.editors[0].active = true
+			}
+			return newState
 		}
     },
 	subscriptions: [
@@ -87,6 +98,25 @@ app.model({
 					}
 				}
 			}
+		},
+		(send, done) => {
+			ipc.on('closeCurrentEditor', () => {
+				send('closeCurrentEditor', () => {})
+			})
+		},
+		(send, done) => {
+			ipc.on('openFiles', (e, files) => {
+				files.forEach(filePath => {
+					fs.readFile(filePath, 'utf8', (err, markdown) => {
+						const data = {
+							filePath,
+							name: path.parse(filePath).name,
+							markdown
+						}
+						send('addEditor', data, () => {})
+					})
+				})
+			})
 		}
 	]
 })

@@ -1,4 +1,29 @@
+const dialog = require('electron').dialog
+
 let template = [{
+    label: 'File',
+    submenu: [{
+        label: 'Close current',
+        accelerator: 'CmdOrCtrl+W',
+        click: function(item, focusedWindow) {
+            focusedWindow.webContents.send('closeCurrentEditor')
+        }
+    }, {
+        label: 'Open',
+        accelerator: 'CmdOrCtrl+O',
+        click: function(item, focusedWindow) {
+            dialog.showOpenDialog({
+                properties: ['openFile', 'multiSelections'],
+                filters: [{
+                    name: 'Markdown',
+                    extensions: ['md']
+                }]
+            }, function(files) {
+                if (files) focusedWindow.webContents.send('openFiles', files)
+            })
+        }
+    }]
+}, {
     label: 'Edit',
     submenu: [{
         label: 'Undo',
