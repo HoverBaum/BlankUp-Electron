@@ -5,7 +5,10 @@ const choo = require('choo')
 const html = require('choo/html')
 const app = choo({
 	onStateChange(action, state, prev, caller, createSend) {
-		console.log('newState\n', state, action);
+		console.log('newState\n', state);
+	},
+	onAction(action, state, name, caller, createSend) {
+		console.log(`action ${name}\n`, action);
 	}
 })
 
@@ -71,6 +74,18 @@ app.model({
 				newState.editors[0].active = true
 			}
 			return newState
+		},
+		closeEditor: (id, state) => {
+			console.log(state.editors.map(e => e));
+			const newState = Object.assign({}, state, {
+				editors: state.editors.filter(editor => editor.id !== id)
+			})
+				console.log(newState.editors.map(e => e));
+			console.log(newState.editors.length >= 1 && newState.editors.every(editor => !editor.active));
+			if(newState.editors.length >= 1 && newState.editors.every(editor => !editor.active)) {
+				newState.editors[0].active = true
+			}
+			return newState
 		}
     },
 	subscriptions: [
@@ -128,7 +143,17 @@ const mainView = (state, prev, send) => html`
 			${state.editors.map(editor => html`<li
 				class="editor-nav__tab ${editor.active ? 'editor-nav__tab_active' : ''}"
 				data-editor-id="${editor.id}"
-				onclick=${() => {send('setEditorActive', editor.id, () => {})}}>${editor.name.length <= 20 ? editor.name : editor.name.substr(0,16) + '...'}</li>`)}
+				onclick=${(e) => {
+						if(/editor-nav__tab-close-icon/g.test(e.target.className)) return
+						send('setEditorActive', editor.id, () => {})
+					}}>
+					${editor.name.length <= 20 ? editor.name : editor.name.substr(0,16) + '...'}
+					<i class="fa fa-close editor-nav__tab-close-icon"
+						onclick=${(e) => {
+							send('closeEditor', editor.id, () => {})
+						}}>
+					</i>
+				</li>`)}
 		</ul>
 	</nav>
     <div class="editors" id="editors">

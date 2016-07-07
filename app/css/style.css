@@ -55,6 +55,7 @@ body {
   color: #ecf0f0;
   font-size: 0.7rem;
   width: 10rem;
+  position: relative;
   padding-right: 1.5rem;
   padding-left: 0.5rem;
   height: 2rem;
@@ -68,4 +69,12 @@ body {
 }
 .editor-nav__tab_active {
   border-bottom: 2px solid #5caef2;
+}
+.editor-nav__tab-close-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.4rem;
+}
+.editor-nav__tab-close-icon:hover {
+  color: #d8676f;
 }
