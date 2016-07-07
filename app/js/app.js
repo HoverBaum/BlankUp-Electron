@@ -138,7 +138,7 @@ app.model({
 
 const mainView = (state, prev, send) => html`
   <main>
-  	<nav class="editor-nav">
+  	<nav class="editor-nav" style=${state.editors.length === 0 ? 'display: none;' : ""}>
 		<ul>
 			${state.editors.map(editor => html`<li
 				class="editor-nav__tab ${editor.active ? 'editor-nav__tab_active' : ''}"
@@ -158,6 +158,10 @@ const mainView = (state, prev, send) => html`
 	</nav>
     <div class="editors" id="editors">
 		${state.editors.map(editor => editor.active ? html`<div class="editor" id="editor${editor.id}">${editor.editor}</div>` : '')}
+		${state.editors.length === 0 ? html`<div class="no-editor-placeholder">
+				<img class="no-editor-placeholder__image" src="img/BlankUpSymbolBW.png" /><br />
+				<span class="no-editor-placeholder__text">Drag + Drop a Markdown file here to start.</span>
+			</div>` : ''}
 	</div>
   </main>
 `

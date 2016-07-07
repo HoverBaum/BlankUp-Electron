@@ -82,3 +82,18 @@ body {
 .editor-nav__tab:hover .editor-nav__tab-close-icon {
   display: block;
 }
+.no-editor-placeholder {
+  display: block;
+  margin-top: 10%;
+  text-align: center;
+  opacity: 0.3;
+}
+.no-editor-placeholder__image {
+  display: inline-block;
+  width: 400px;
+  margin-bottom: 1rem;
+}
+.no-editor-placeholder__text {
+  font-size: 1.5rem;
+  color: #ecf0f0;
+}
