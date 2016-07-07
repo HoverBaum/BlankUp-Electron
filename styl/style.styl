@@ -16,7 +16,7 @@ body
 .editor-nav__tab
 	color: syntax-text-color
 	font-size: 0.7rem
-	width: 10rem
+	min-width: 11rem
 	position: relative
 	padding-right: 1.5rem
 	padding-left: 0.5rem
@@ -42,6 +42,13 @@ body
 
 .editor-nav__tab:hover .editor-nav__tab-close-icon
 	display: block
+
+.editor-nav__tab-change-icon
+	color: pink
+	display: none
+
+.editor-nav__tab_changed .editor-nav__tab-change-icon
+	display: inline-block
 
 .no-editor-placeholder
 	display: block

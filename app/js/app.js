@@ -34,6 +34,14 @@ function createNewEditor(infos) {
 	document.body.appendChild(div)
 	newEditor.BlankUp = BlankUp(div)
 	newEditor.BlankUp.setMarkdown(infos.markdown || '')
+	newEditor.BlankUp.on('change', (newValue) => {
+		document.body.dispatchEvent(new CustomEvent('editorChanged', {
+			detail: {
+				id: newEditor.id,
+				newValue
+			}
+		}))
+	})
 	newEditor.editor = div
 	document.body.removeChild(div)
 	return newEditor
@@ -80,16 +88,23 @@ app.model({
 			return newState
 		},
 		closeEditor: (id, state) => {
-			console.log(state.editors.map(e => e));
 			const newState = Object.assign({}, state, {
 				editors: state.editors.filter(editor => editor.id !== id)
 			})
-				console.log(newState.editors.map(e => e));
-			console.log(newState.editors.length >= 1 && newState.editors.every(editor => !editor.active));
 			if(newState.editors.length >= 1 && newState.editors.every(editor => !editor.active)) {
 				newState.editors[0].active = true
 			}
 			return newState
+		},
+		setEditorChanged: (id, state) => {
+			return Object.assign({}, state, {
+				editors: state.editors.map(editor => {
+					if(editor.id === id) {
+						editor.changed = true
+					}
+					return editor
+				})
+			})
 		}
     },
 	subscriptions: [
@@ -136,6 +151,11 @@ app.model({
 					})
 				})
 			})
+		},
+		(send, done) => {
+			document.body.addEventListener('editorChanged', (infos) => {
+				send('setEditorChanged', infos.detail.id, () => {})
+			})
 		}
 	]
 })
@@ -145,13 +165,14 @@ const mainView = (state, prev, send) => html`
   	<nav class="editor-nav" style=${state.editors.length === 0 ? 'display: none;' : ""}>
 		<ul>
 			${state.editors.map(editor => html`<li
-				class="editor-nav__tab ${editor.active ? 'editor-nav__tab_active' : ''}"
+				class="editor-nav__tab ${editor.active ? 'editor-nav__tab_active' : ''} ${editor.changed ? 'editor-nav__tab_changed' : ''}"
 				data-editor-id="${editor.id}"
 				onclick=${(e) => {
 						if(/editor-nav__tab-close-icon/g.test(e.target.className)) return
 						send('setEditorActive', editor.id, () => {})
 					}}>
-					${editor.name.length <= 20 ? editor.name : editor.name.substr(0,16) + '...'}
+					<i class="fa fa-circle-o editor-nav__tab-change-icon"></i>
+					${editor.name.length <= 19 ? editor.name : editor.name.substr(0,16) + '...'}
 					<i class="fa fa-close editor-nav__tab-close-icon"
 						onclick=${(e) => {
 							send('closeEditor', editor.id, () => {})
