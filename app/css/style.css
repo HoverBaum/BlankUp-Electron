@@ -45,6 +45,11 @@ audio:not([controls]),
 body {
   font-family: 'Fira Mono', sans-serif;
   background-color: #3d4954;
+  display: flex;
+  flex-direction: column;
+}
+.editor-container {
+  flex-grow: 1;
 }
 .editor-nav {
   background-color: #2b333b;
