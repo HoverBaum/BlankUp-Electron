@@ -12,7 +12,7 @@ const app = choo({
     }
 })
 
-//FIXME Editor looses focus upon input...
+//FIXME editors don't display all their contents initially
 //FIXME Can't click below editor to get into it.
 
 const generateId = () => {
@@ -114,6 +114,19 @@ app.model({
 			}
 		},
 		addEditor: (data, state, send) => {
+
+			//Only open each file once.
+			if(data.filePath) {
+				if(state.editors.some(editor => editor.filePath === data.filePath)) {
+
+					//Set the editor containing the file active.
+					const id = state.editors.find(editor => editor.filePath === data.filePath)
+					send('activateEditor', id, () => {})
+					return
+				}
+			}
+
+			//Create a new editor and focus it.
 			const newEditor = createNewEditor({
 				name: data.name,
 				filePath: data.filePath,
