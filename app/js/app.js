@@ -70,18 +70,9 @@ app.model({
         editors: []
     },
     reducers: {
-        addEditor: (data, state) => {
+        saveEditor: (newEditor, state) => {
             return Object.assign({}, state, {
-                editors: state.editors.map(editor => {
-                        editor.active = false
-                        return editor
-                    })
-                    .concat([createNewEditor({
-                        name: data.name,
-                        filePath: data.filePath,
-                        markdown: data.markdown,
-                        active: true
-                    })])
+                editors: state.editors.concat([newEditor])
             })
         },
         setEditorActive: (id, state) => {
@@ -96,23 +87,10 @@ app.model({
                 })
             })
         },
-        closeCurrentEditor: (data, state) => {
-            const newState = Object.assign({}, state, {
-                editors: state.editors.filter(editor => editor.active === false)
-            })
-            if (newState.editors.length >= 1) {
-                newState.editors[0].active = true
-            }
-            return newState
-        },
-        closeEditor: (id, state) => {
-            const newState = Object.assign({}, state, {
+        removeEditor: (id, state) => {
+            return Object.assign({}, state, {
                 editors: state.editors.filter(editor => editor.id !== id)
             })
-            if (newState.editors.length >= 1 && newState.editors.every(editor => !editor.active)) {
-                newState.editors[0].active = true
-            }
-            return newState
         },
         setEditorChanged: (id, state) => {
             return Object.assign({}, state, {
@@ -136,7 +114,54 @@ app.model({
         }
     },
 	effects: {
-        saveCurrentEditor: saveCurrentEditorToFile
+        saveCurrentEditor: saveCurrentEditorToFile,
+		addEditor: (data, state, send) => {
+			const newEditor = createNewEditor({
+				name: data.name,
+				filePath: data.filePath,
+				markdown: data.markdown
+			})
+			send('saveEditor', newEditor, () => {})
+			send('activateEditor', newEditor.id, () => {})
+		},
+		activateEditor: (id, state, send) => {
+			send('setEditorActive', id, () => {})
+
+			//Now change the displayed editor outside of Choo.
+			const BlankUp = state.editors.find(editor => editor.id === id)
+			const container = document.querySelector('#editorContianer')
+			container.innerHTML = ''
+			container.appendChild(BlankUp.editor)
+			const textarea = container.querySelector('textarea')
+			textarea.focus()
+		},
+		closeEditor: (id, state, send) => {
+
+			//Check if there are more editors.
+			if(state.editors.length > 1) {
+
+				//Set the one before the current one active if there are more.
+				let editorIndex = 0
+				state.editors.forEach((editor, index) => {
+					if(editor.id === id) {
+						editorIndex = index
+					}
+				})
+				const index = editorIndex === 0 ? 1 : editorIndex - 1
+				send('activateEditor', state.editors[index].id, () => {})
+			} else {
+				
+				//If this is the last editor make sure to clear the editorContainer.
+				document.querySelector('#editorContianer').innerHTML = ''
+			}
+
+			//Do this last so all prior operations can use the old indexes.
+			send('removeEditor', id, () => {})
+		},
+		closeCurrentEditor: (data, state, send) => {
+            const currentId = state.editors.find(editor => editor.active === true).id
+			send('closeEditor', currentId, () => {})
+        }
     },
     subscriptions: [
         (send, done) => {
@@ -211,7 +236,7 @@ const mainView = (state, prev, send) => html `
 				data-editor-id="${editor.id}"
 				onclick=${(e) => {
 						if(/editor-nav__tab-close-icon/g.test(e.target.className)) return
-						send('setEditorActive', editor.id, () => {})
+						send('activateEditor', editor.id, () => {})
 					}}>
 					<i class="fa fa-circle-o editor-nav__tab-change-icon"></i>
 					${editor.name.length <= 19 ? editor.name : editor.name.substr(0,16) + '...'}
@@ -223,13 +248,11 @@ const mainView = (state, prev, send) => html `
 				</li>`)}
 		</ul>
 	</nav>
-    <div class="editors" id="editors">
-		${state.editors.map(editor => editor.active ? html`<div class="editor" id="editor${editor.id}">${editor.editor}</div>` : '')}
-		${state.editors.length === 0 ? html`<div class="no-editor-placeholder">
-				<img class="no-editor-placeholder__image" src="img/BlankUpSymbolBW.png" /><br />
-				<span class="no-editor-placeholder__text">Drag + Drop a Markdown file here to start.</span>
-			</div>` : ''}
-	</div>
+	${state.editors.length === 0 ? html`<div class="no-editor-placeholder">
+			<img class="no-editor-placeholder__image" src="img/BlankUpSymbolBW.png" /><br />
+			<span class="no-editor-placeholder__text">Drag + Drop a Markdown file here to start.</span>
+		</div>` : ''
+	}
   </main>
 `
 
@@ -238,4 +261,4 @@ app.router((route) => [
 ])
 
 const tree = app.start()
-document.body.appendChild(tree)
+document.getElementById('app').appendChild(tree)
