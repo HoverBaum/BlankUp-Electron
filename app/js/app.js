@@ -19,21 +19,6 @@ const generateId = () => {
     return (Date.now() + Math.random().toString(36).substr(2, 9)).toUpperCase()
 }
 
-const saveCurrentEditorToFile = (action, state, send) => {
-    const editor = state.editors.find(editor => editor.active)
-	if(editor.filePath && editor.filePath !== null) {
-		fs.writeFile(editor.filePath, editor.BlankUp.getMarkdown(), (err) => {
-			if(err) {
-				//TODO Error handling
-				return
-			}
-			send('setEditorUnchanged', editor.id, () => {})
-		})
-	} else {
-
-	}
-}
-
 /**
  *   Create a new editor. Optionally set some parameters.
  *   @param  {Object} infos - Set parameters on the new editor.
@@ -114,7 +99,20 @@ app.model({
         }
     },
 	effects: {
-        saveCurrentEditor: saveCurrentEditorToFile,
+        saveCurrentEditor: (action, state, send) => {
+			const editor = state.editors.find(editor => editor.active)
+			if(editor.filePath && editor.filePath !== null) {
+				fs.writeFile(editor.filePath, editor.BlankUp.getMarkdown(), (err) => {
+					if(err) {
+						//TODO Error handling
+						return
+					}
+					send('setEditorUnchanged', editor.id, () => {})
+				})
+			} else {
+
+			}
+		},
 		addEditor: (data, state, send) => {
 			const newEditor = createNewEditor({
 				name: data.name,
@@ -150,7 +148,7 @@ app.model({
 				const index = editorIndex === 0 ? 1 : editorIndex - 1
 				send('activateEditor', state.editors[index].id, () => {})
 			} else {
-				
+
 				//If this is the last editor make sure to clear the editorContainer.
 				document.querySelector('#editorContianer').innerHTML = ''
 			}
