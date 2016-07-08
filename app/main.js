@@ -2,12 +2,26 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
+const ipc = require('electron').ipcMain
+const dialog = require('electron').dialog
 
 const menuTemplate = require('./menu')
 
 //Reload for development when things change.
 require('electron-reload')(__dirname);
 
+ipc.on('saveDialog', function(event) {
+    const options = {
+        title: 'Save Markdown',
+        filters: [{
+            name: 'Markdown',
+            extensions: ['md']
+        }]
+    }
+    dialog.showSaveDialog(options, function(filename) {
+        event.sender.send('newFilePath', filename)
+    })
+})
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

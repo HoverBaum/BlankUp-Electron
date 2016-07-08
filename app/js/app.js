@@ -96,7 +96,21 @@ app.model({
                     return editor
                 })
             })
-        }
+        },
+		setCurrentEditorsFilePath: (filePath, state) => {
+			return Object.assign({}, state, {
+				editors: state.editors.map(editor => {
+					if(editor.active) {
+						return Object.assign({}, editor, {
+							filePath: filePath,
+							name: path.parse(filePath).name
+						})
+					} else {
+						return editor
+					}
+				})
+			})
+		}
     },
 	effects: {
         saveCurrentEditor: (action, state, send) => {
@@ -111,6 +125,8 @@ app.model({
 				})
 			} else {
 
+				//Tell main process that we need a new filePath.
+				ipc.send('saveDialog')
 			}
 		},
 		addEditor: (data, state, send) => {
@@ -233,6 +249,12 @@ app.model({
 			ipc.on('newFile', () => {
 				const editor = createNewEditor({})
 				send('addEditor', editor, () => {})
+			})
+		},
+		(send, done) => {
+			ipc.on('newFilePath', (e, filePath) => {
+				send('setCurrentEditorsFilePath', filePath, () => {})
+				send('saveCurrentEditor', () => {})
 			})
 		}
     ]
