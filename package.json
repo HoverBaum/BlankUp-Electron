@@ -1,0 +1,30 @@
+{
+  "name": "BlankUp-electron",
+  "version": "1.0.0",
+  "description": "BlankUp wrapped in Electron.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HoverBaum/BlankUp-Electron.git"
+  },
+  "keywords": [
+	  "Markdown",
+	  "editor",
+	  "Electron"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/HoverBaum/BlankUp-Electron/issues"
+  },
+  "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.0"
+  },
+  "dependencies": {
+    "BlankUp": "^0.1.0"
+  }
+}
