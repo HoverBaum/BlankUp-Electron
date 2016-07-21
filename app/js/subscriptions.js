@@ -65,9 +65,33 @@ const subscriptions = [
 		})
 	},
 	(send, done) => {
-		ipc.on('newFilePath', (e, filePath) => {
-			send('setCurrentEditorsFilePath', filePath, () => {})
-			send('saveCurrentEditor', () => {})
+		ipc.on('newFilePath', (e, filePath, id, closeEditor) => {
+
+			//Check if the user canceled out of choosing a filepath.
+			if(filePath === null) return
+			send('setEditorFilePath', {id, filePath}, () => {})
+			send('saveEditor', {id, closeEditor}, () => {})
+		})
+	},
+	(send, done) => {
+
+		//save cahnges, dont save changes, cancel
+		ipc.on('reallyCloseDialogAnswer', (e, index, id) => {
+			if(index === 0) {
+
+				//Save changes and then close.
+				send('saveEditor', {id, closeEditor: true}, () => {
+					send('reallyCloseEditor', id, () => {})
+				})
+				//TODO wait for this to complete, then close the ditor.
+			} else if(index === 1) {
+
+				//Just close.
+				send('reallyCloseEditor', id, () => {})
+			} else {
+
+				//Do nothing.
+			}
 		})
 	}
 ]

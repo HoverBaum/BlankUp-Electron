@@ -1,6 +1,13 @@
+const ipc = require('electron').ipcRenderer
+
 const effects = {
 	saveCurrentEditor: (action, state, send) => {
-		const editor = state.editors.find(editor => editor.active)
+		const editorId = state.editors.find(editor => editor.active).id
+		send('saveEditor', {id: editorId}, () => {})
+	},
+	saveEditor: (data, state, send, done) => {
+		const id = data.id
+		const editor = state.editors.find(editor => editor.id === id)
 		if(editor.filePath && editor.filePath !== null) {
 			fs.writeFile(editor.filePath, editor.BlankUp.getMarkdown(), (err) => {
 				if(err) {
@@ -8,11 +15,15 @@ const effects = {
 					return
 				}
 				send('setEditorUnchanged', editor.id, () => {})
+				done()
+				if(data.closeEditor) {
+					send('closeEditor', id, () => {})
+				}
 			})
 		} else {
 
 			//Tell main process that we need a new filePath.
-			ipc.send('saveDialog')
+			ipc.send('saveDialog', id, data.closeEditor)
 		}
 	},
 	addEditor: (data, state, send) => {
@@ -34,7 +45,7 @@ const effects = {
 			filePath: data.filePath,
 			markdown: data.markdown
 		})
-		send('saveEditor', newEditor, () => {})
+		send('addEditorToStore', newEditor, () => {})
 		send('activateEditor', newEditor.id, () => {})
 	},
 	activateEditor: (id, state, send) => {
@@ -57,6 +68,16 @@ const effects = {
 	},
 	closeEditor: (id, state, send) => {
 
+		//First make sure this editor does not contain unsaved changes.
+		const editor = state.editors.find(editor => editor.id === id)
+		if(editor.changed) {
+			ipc.send('reallyCloseDialog', id)
+		} else {
+			send('reallyCloseEditor', id, () => {})
+		}
+	},
+	reallyCloseEditor: (id, state, send) => {
+
 		//Check if there are more editors.
 		if(state.editors.length > 1) {
 
@@ -72,7 +93,7 @@ const effects = {
 		} else {
 
 			//If this is the last editor make sure to clear the editorContainer.
-			document.querySelector('#editorContianer').innerHTML = ''
+			document.querySelector('#editorContainer').innerHTML = ''
 		}
 
 		//Do this last so all prior operations can use the old indexes.

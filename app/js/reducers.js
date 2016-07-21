@@ -1,5 +1,5 @@
 const reducers = {
-	saveEditor: (newEditor, state) => {
+	addEditorToStore: (newEditor, state) => {
 		return Object.assign({}, state, {
 			editors: state.editors.concat([newEditor])
 		})
@@ -48,6 +48,20 @@ const reducers = {
 					return Object.assign({}, editor, {
 						filePath: filePath,
 						name: path.parse(filePath).name
+					})
+				} else {
+					return editor
+				}
+			})
+		})
+	},
+	setEditorFilePath: (data, state) => {
+		return Object.assign({}, state, {
+			editors: state.editors.map(editor => {
+				if(editor.id === data.id) {
+					return Object.assign({}, editor, {
+						filePath: data.filePath,
+						name: path.parse(data.filePath).name
 					})
 				} else {
 					return editor

@@ -10,7 +10,7 @@ const menuTemplate = require('./menu')
 //Reload for development when things change.
 require('electron-reload')(__dirname);
 
-ipc.on('saveDialog', function(event) {
+ipc.on('saveDialog', function(event, id, closeEditor) {
     const options = {
         title: 'Save Markdown',
         filters: [{
@@ -19,7 +19,19 @@ ipc.on('saveDialog', function(event) {
         }]
     }
     dialog.showSaveDialog(options, function(filename) {
-        event.sender.send('newFilePath', filename)
+        event.sender.send('newFilePath', filename, id, closeEditor)
+    })
+})
+
+ipc.on('reallyCloseDialog', function(event, id) {
+    const options = {
+        type: 'warning',
+        title: 'Unsaved Changes',
+        message: "You have unsaved changes\n\nSave changes before closing?",
+        buttons: ['Yes', 'No', 'Cancel']
+    }
+    dialog.showMessageBox(options, function(index) {
+        event.sender.send('reallyCloseDialogAnswer', index, id)
     })
 })
 
