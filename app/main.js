@@ -10,7 +10,7 @@ const menuTemplate = require('./menu')
 //Reload for development when things change.
 require('electron-reload')(__dirname);
 
-ipc.on('saveDialog', function(event, id, closeEditor) {
+ipc.on('saveDialog', (event, id, closeEditor) => {
     const options = {
         title: 'Save Markdown',
         filters: [{
@@ -18,12 +18,12 @@ ipc.on('saveDialog', function(event, id, closeEditor) {
             extensions: ['md']
         }]
     }
-    dialog.showSaveDialog(options, function(filename) {
+    dialog.showSaveDialog(options, (filename) => {
         event.sender.send('newFilePath', filename, id, closeEditor)
     })
 })
 
-ipc.on('reallyCloseDialog', function(event, id) {
+ipc.on('reallyCloseDialog', (event, id) => {
     const options = {
         type: 'warning',
         title: 'Unsaved Changes',
@@ -33,6 +33,10 @@ ipc.on('reallyCloseDialog', function(event, id) {
     dialog.showMessageBox(options, function(index) {
         event.sender.send('reallyCloseDialogAnswer', index, id)
     })
+})
+
+ipc.on('errorDialog', (event, msg) => {
+	 dialog.showErrorBox('An Error Occured', msg)
 })
 
 // Keep a global reference of the window object, if you don't, the window will

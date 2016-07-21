@@ -83,7 +83,6 @@ const subscriptions = [
 				send('saveEditor', {id, closeEditor: true}, () => {
 					send('reallyCloseEditor', id, () => {})
 				})
-				//TODO wait for this to complete, then close the ditor.
 			} else if(index === 1) {
 
 				//Just close.

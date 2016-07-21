@@ -11,7 +11,7 @@ const effects = {
 		if(editor.filePath && editor.filePath !== null) {
 			fs.writeFile(editor.filePath, editor.BlankUp.getMarkdown(), (err) => {
 				if(err) {
-					//TODO Error handling
+					ipc.send('errorDialog', 'An error occured while saving the file.\n\nPlease try again.')
 					return
 				}
 				send('setEditorUnchanged', editor.id, () => {})

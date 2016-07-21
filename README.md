@@ -12,7 +12,7 @@ Need to implement all the nice things:
 	- [x] Click under editor focuses it
 - [x] Save new file using system dialog
 - [x] Open files
-- [ ] Feedback when users close edited files
+- [x] Feedback when users close edited files
 - [ ] Error handle all the things
 - [ ] Shortcuts to move between open files
 - [ ] Enable preview
