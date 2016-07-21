@@ -101,11 +101,15 @@ q {
 .fa {
   transition: 0.3s all ease-out;
 }
+html {
+  height: 100%;
+}
 body {
   font-family: 'Fira Mono', sans-serif;
   background-color: #3d4954;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 .editor-container {
   flex-grow: 1;

@@ -12,9 +12,6 @@ const app = choo({
     }
 })
 
-//FIXME editors don't display all their contents initially
-//FIXME Can't click below editor to get into it.
-
 const generateId = () => {
     return (Date.now() + Math.random().toString(36).substr(2, 9)).toUpperCase()
 }
@@ -98,3 +95,15 @@ app.router((route) => [
 
 const tree = app.start()
 document.getElementById('app').appendChild(tree)
+
+//Make it so that clicking below the editors actually gets a user into it.
+const container = document.querySelector('#editorContainer')
+container.addEventListener('click', (e) => {
+	if(e.target.id !== 'editorContainer') return
+	const editor = document.querySelector('textarea')
+	if(editor) {
+		document.body.dispatchEvent(new CustomEvent('focusCurrentEditor', {
+            detail: {}
+        }))
+	}
+})

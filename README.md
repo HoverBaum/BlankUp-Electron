@@ -8,7 +8,8 @@ Look for something working at the End of July.
 Need to implement all the nice things:
 
 - [x] Create new, empty file
-	- [ ] Focus new file on creation
+	- [x] Focus new file on creation
+	- [ ] Click under editor focuses it
 - [x] Save new file using system dialog
 - [x] Open files
 - [ ] Feedback when users close edited files

@@ -49,6 +49,11 @@ const subscriptions = [
 		})
 	},
 	(send, done) => {
+		document.body.addEventListener('focusCurrentEditor', (infos) => {
+			send('focusCurrentEditor', infos.detail, () => {})
+		})
+	},
+	(send, done) => {
 		ipc.on('saveCurrentEditor', () => {
 			send('saveCurrentEditor', () => {})
 		})

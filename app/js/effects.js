@@ -42,11 +42,18 @@ const effects = {
 
 		//Now change the displayed editor outside of Choo.
 		const BlankUp = state.editors.find(editor => editor.id === id)
-		const container = document.querySelector('#editorContianer')
+		const container = document.querySelector('#editorContainer')
 		container.innerHTML = ''
 		container.appendChild(BlankUp.editor)
-		const textarea = container.querySelector('textarea')
-		textarea.focus()
+		send('focusEditor', id, () => {})
+	},
+	focusEditor: (id, state, send) => {
+		const BlankUp = state.editors.find(editor => editor.id === id)
+		BlankUp.BlankUp.editor.focus() //FIXME  wait for BlankUp to implement focus() and use that
+	},
+	focusCurrentEditor: (action, state, send) => {
+		const id = state.editors.find(editor => editor.active === true).id
+		send('focusEditor', id, () => {})
 	},
 	closeEditor: (id, state, send) => {
 
