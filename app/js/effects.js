@@ -1,4 +1,5 @@
 const ipc = require('electron').ipcRenderer
+const findCurrentEditorIndex = require('./helper').findCurrentEditorIndex
 
 const effects = {
 	saveCurrentEditor: (action, state, send) => {
@@ -65,6 +66,22 @@ const effects = {
 	focusCurrentEditor: (action, state, send) => {
 		const id = state.editors.find(editor => editor.active === true).id
 		send('focusEditor', id, () => {})
+	},
+	focusNextEditor: (action, state, send) => {
+		let currentIndex = findCurrentEditorIndex(state.editors)
+		let nextIndex = currentIndex += 1
+		if(nextIndex >= state.editors.length) {
+			nextIndex = 0
+		}
+		send('activateEditor', state.editors[nextIndex].id, () => {})
+	},
+	focusPreviousEditor: (action, state, send) => {
+		let currentIndex = findCurrentEditorIndex(state.editors)
+		let previousIndex = currentIndex -= 1
+		if(previousIndex < 0) {
+			previousIndex = state.editors.length - 1
+		}
+		send('activateEditor', state.editors[previousIndex].id, () => {})
 	},
 	closeEditor: (id, state, send) => {
 

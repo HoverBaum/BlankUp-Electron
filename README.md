@@ -13,7 +13,7 @@ Need to implement all the nice things:
 - [x] Save new file using system dialog
 - [x] Open files
 - [x] Feedback when users close edited files
-- [ ] Error handle all the things
+- [x] Error handle all the things
 - [ ] Shortcuts to move between open files
 - [ ] Enable preview
 

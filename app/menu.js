@@ -3,12 +3,12 @@ const dialog = require('electron').dialog
 let template = [{
     label: 'File',
     submenu: [{
-		label: 'New',
-		accelerator: ' CmdOrCtrl+N',
-		click: function(item, focusedWindow) {
-			focusedWindow.webContents.send('newFile')
-		}
-	}, {
+        label: 'New',
+        accelerator: ' CmdOrCtrl+N',
+        click: function(item, focusedWindow) {
+            focusedWindow.webContents.send('newFile')
+        }
+    }, {
         label: 'Open',
         accelerator: 'CmdOrCtrl+O',
         click: function(item, focusedWindow) {
@@ -29,12 +29,12 @@ let template = [{
             focusedWindow.webContents.send('closeCurrentEditor')
         }
     }, {
-		label: 'Save',
-		accelerator: 'CmdOrCtrl+S',
-		click: function(item, focusedWindow) {
-			focusedWindow.webContents.send('saveCurrentEditor')
-		}
-	}]
+        label: 'Save',
+        accelerator: 'CmdOrCtrl+S',
+        click: function(item, focusedWindow) {
+            focusedWindow.webContents.send('saveCurrentEditor')
+        }
+    }]
 }, {
     label: 'Edit',
     submenu: [{
@@ -67,23 +67,6 @@ let template = [{
 }, {
     label: 'View',
     submenu: [{
-        label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
-        click: function(item, focusedWindow) {
-            if (focusedWindow) {
-                // on reload, start fresh and close any old
-                // open secondary windows
-                if (focusedWindow.id === 1) {
-                    BrowserWindow.getAllWindows().forEach(function(win) {
-                        if (win.id > 1) {
-                            win.close()
-                        }
-                    })
-                }
-                focusedWindow.reload()
-            }
-        }
-    }, {
         label: 'Toggle Full Screen',
         accelerator: (function() {
             if (process.platform === 'darwin') {
@@ -98,19 +81,55 @@ let template = [{
             }
         }
     }, {
-        label: 'Toggle Developer Tools',
-        accelerator: (function() {
-            if (process.platform === 'darwin') {
-                return 'Alt+Command+I'
-            } else {
-                return 'Ctrl+Shift+I'
+		label: 'Focus next',
+		accelerator: 'CmdOrCtrl+Tab',
+		click: function(item, focusedWindow) {
+			if(focusedWindow) {
+				focusedWindow.webContents.send('focusNextEditor')
+			}
+		}
+	}, {
+		label: 'Focus previous',
+		accelerator: 'CmdOrCtrl+Shift+Tab',
+		click: function(item, focusedWindow) {
+			if(focusedWindow) {
+				focusedWindow.webContents.send('focusPreviousEditor')
+			}
+		}
+	}, {
+        label: 'Developer',
+        submenu: [{
+            label: 'Reload',
+            accelerator: 'CmdOrCtrl+R',
+            click: function(item, focusedWindow) {
+                if (focusedWindow) {
+                    // on reload, start fresh and close any old
+                    // open secondary windows
+                    if (focusedWindow.id === 1) {
+                        BrowserWindow.getAllWindows().forEach(function(win) {
+                            if (win.id > 1) {
+                                win.close()
+                            }
+                        })
+                    }
+                    focusedWindow.reload()
+                }
             }
-        })(),
-        click: function(item, focusedWindow) {
-            if (focusedWindow) {
-                focusedWindow.toggleDevTools()
+        }, {
+            label: 'Toggle Developer Tools',
+            accelerator: (function() {
+                if (process.platform === 'darwin') {
+                    return 'Alt+Command+I'
+                } else {
+                    return 'Ctrl+Shift+I'
+                }
+            })(),
+            click: function(item, focusedWindow) {
+                if (focusedWindow) {
+                    focusedWindow.toggleDevTools()
+                }
             }
-        }
+        }]
     }]
 }, {
     label: 'Help',

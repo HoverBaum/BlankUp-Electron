@@ -65,6 +65,16 @@ const subscriptions = [
 		})
 	},
 	(send, done) => {
+		ipc.on('focusNextEditor', () => {
+			send('focusNextEditor', () => {})
+		})
+	},
+	(send, done) => {
+		ipc.on('focusPreviousEditor', () => {
+			send('focusPreviousEditor', () => {})
+		})
+	},
+	(send, done) => {
 		ipc.on('newFilePath', (e, filePath, id, closeEditor) => {
 
 			//Check if the user canceled out of choosing a filepath.
