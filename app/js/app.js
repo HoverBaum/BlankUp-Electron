@@ -54,7 +54,12 @@ const subscriptions = require('./js/subscriptions')
 
 app.model({
     state: {
-        editors: []
+        editors: [],
+		hints: [
+			'Drag + Drop a Markdown file here to start',
+			'Press Ctrl+M to toggle the preview',
+			'Get to the next open file using Ctrl+Tab'
+		]
     },
     reducers,
 	effects,
@@ -84,7 +89,7 @@ const mainView = (state, prev, send) => html `
 	</nav>
 	${state.editors.length === 0 ? html`<div class="no-editor-placeholder">
 			<img class="no-editor-placeholder__image" src="img/BlankUpSymbolBW.png" /><br />
-			<span class="no-editor-placeholder__text">Drag + Drop a Markdown file here to start.</span>
+			<span class="no-editor-placeholder__text">${state.hints[Math.floor(Math.random()*state.hints.length)]}</span>
 		</div>` : ''
 	}
   </main>
