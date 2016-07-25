@@ -34,11 +34,11 @@ function createNewEditor(infos) {
     document.body.appendChild(div)
     newEditor.BlankUp = BlankUp(div)
     newEditor.BlankUp.setMarkdown(infos.markdown || '')
-    newEditor.BlankUp.on('change', (newValue) => {
+    newEditor.BlankUp.on('change', (event) => {
+		console.debug('changes', newEditor.filePath, event)
         document.body.dispatchEvent(new CustomEvent('editorChanged', {
             detail: {
-                id: newEditor.id,
-                newValue
+                id: newEditor.id
             }
         }))
     })

@@ -15,7 +15,6 @@ Need to implement all the nice things:
 - [x] Feedback when users close edited files
 - [x] Error handle all the things
 - [x] Shortcuts to move between open files
-- [ ] Detect closing of window and check for unsaved changes
 - [ ] Fix a bug that lets editors think they have changed when a new file gets added
 - [ ] Enable preview
 
