@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "stylus": "node node_modules/stylus/bin/stylus styl/style.styl --out app/css --use url --with \"{limit: false}\" --watch",
-	"dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run stylus\" \"npm start\""
+    "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run stylus\" \"npm start\""
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "electron-reload": "^1.0.0"
   },
   "dependencies": {
-    "BlankUp": "^0.1.1",
+    "BlankUp": "^0.2.0",
     "choo": "^3.0.0",
     "font-awesome": "^4.6.3"
   }
