@@ -27,7 +27,8 @@ function createNewEditor(infos) {
         changed: false,
         filePath: infos.filePath || null,
         name: infos.name || 'untitled',
-        id: generateId()
+        id: generateId(),
+		preview: infos.preview || false
     }
     let div = document.createElement('div')
     div.style.height = '100%'

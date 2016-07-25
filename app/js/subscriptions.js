@@ -102,6 +102,11 @@ const subscriptions = [
 				//Do nothing.
 			}
 		})
+	},
+	(send, done) => {
+		ipc.on('togglePreview', () => {
+			send('toggleCurrentPreview', () => {})
+		})
 	}
 ]
 

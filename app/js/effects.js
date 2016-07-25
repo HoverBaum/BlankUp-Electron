@@ -119,6 +119,12 @@ const effects = {
 	closeCurrentEditor: (data, state, send) => {
 		const currentId = state.editors.find(editor => editor.active === true).id
 		send('closeEditor', currentId, () => {})
+	},
+	toggleCurrentPreview: (data, state, send) => {
+		const currentEditor = state.editors.find(editor => editor.active)
+		currentEditor.BlankUp.previewVisible(!currentEditor.preview)
+		const id = currentEditor.id
+		send('togglePreview', id, () => {})
 	}
 }
 

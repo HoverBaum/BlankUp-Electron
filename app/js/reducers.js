@@ -68,6 +68,19 @@ const reducers = {
 				}
 			})
 		})
+	},
+	togglePreview: (id, state) => {
+		return Object.assign({}, state, {
+			editors: state.editors.map(editor => {
+				if(editor.id === id) {
+					return Object.assign({}, editor, {
+						preview: !editor.preview
+					})
+				} else {
+					return editor
+				}
+			})
+		})
 	}
 }
 

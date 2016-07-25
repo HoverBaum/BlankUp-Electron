@@ -97,6 +97,14 @@ let template = [{
 			}
 		}
 	}, {
+		label: 'Toggle preview',
+		accelerator: 'CmdOrCtrl+M',
+		click: function(item, focusedWindow) {
+			if(focusedWindow) {
+				focusedWindow.webContents.send('togglePreview')
+			}
+		}
+	}, {
         label: 'Developer',
         submenu: [{
             label: 'Reload',
