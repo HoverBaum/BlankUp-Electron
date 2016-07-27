@@ -9,7 +9,9 @@
     "dev": "set DEV=true && node ./node_modules/concurrently/src/main.js --kill-others \"npm run stylus\" \"npm start\"",
     "postinstall": "install-app-deps",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "build",
+	"dist-x": "build -ml",
+	"release": "build"
   },
   "private": true,
   "repository": {
