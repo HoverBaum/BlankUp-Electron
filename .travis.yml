@@ -35,3 +35,10 @@ script:
 branches:
   except:
   - "/^v\\d+\\.\\d+\\.\\d+$/"
+deploy:
+  provider: releases
+  api_key:
+    secure: d4Xb1fdRAzfod1b16eQ2/ViDJeCqZDJM3WXj8VOmqhSMgtNdtGD9vPyGrKgqzQJ/zxSc9ZcbORc3iYQSgZ/XNpL3X9KoA0zhG4LFqgDbLI2AdPSaoOWeO9ua5szkSkSziIw33yI/xM6F/IN6DwlMqndoJlw9rBiDG9ssi9NWKVQRzrYafWaYBjDe5mJboSDyNZA+e1U6yP+KC1Z4OHBiIWL/0OtuIiLtqLp7/BEVIMYm/FNtYUhV8fhsgvk/rC/5k10rBG2NaH4So2je3MGjst4CjS1OqNbMylVDldyJs5lVWcA/3/b7CTXYIWxGA8MnQcTyGerGnXx8ofaE2guVvIKeY2yO5QoMGH+/JiyHXUOC1j1g4IKyqgakKKCAyxkUZIgH88MkUjdR/vDxRkd/cTBMCE/O5QQ/jtGONpW+cCIae39CDw3OIepVOix7+RRbWIgBUJh9VAN1MFj/+NEk0MVtD0TkN/+0D2FUcGs+mhp/Ywr22W2c1Z8IFoDr1gvucpDwVo+DxpEN5/VBynA/a8016cDRMZIBMqh+pBKY3pcBHJEkDAtjeH5NIQxvzByWZ6i0dIcn+6zaUAFN+aCnh7gVGyKgbq5w6Y7Nu15CMWgX4BsQ0bnBgJRbtNNatI5c67DXo/3V9Ettsah35OpcRLQ92qVM0IsZdLvB1fPosgA=
+  file: dist
+  on:
+    repo: HoverBaum/BlankUp-Electron
