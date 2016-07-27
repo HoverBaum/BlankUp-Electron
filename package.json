@@ -1,35 +1,42 @@
 {
-  "name": "BlankUp-electron",
-  "version": "1.0.0",
-  "description": "BlankUp wrapped in Electron.",
-  "main": "app/main.js",
-  "scripts": {
-    "start": "electron .",
-    "stylus": "node node_modules/stylus/bin/stylus styl/style.styl --out app/css --use url --with \"{limit: false}\" --watch",
-    "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run stylus\" \"npm start\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HoverBaum/BlankUp-Electron.git"
-  },
-  "keywords": [
-    "Markdown",
-    "editor",
-    "Electron"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/HoverBaum/BlankUp-Electron/issues"
-  },
-  "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
-  "devDependencies": {
-    "electron-prebuilt": "^1.2.0",
-    "electron-reload": "^1.0.0"
-  },
-  "dependencies": {
-    "BlankUp": "^0.2.0",
-    "choo": "^3.0.0",
-    "font-awesome": "^4.6.3"
-  }
+    "name": "BlankUp-electron",
+    "version": "1.0.0",
+    "description": "BlankUp wrapped in Electron.",
+    "main": "app/main.js",
+    "scripts": {
+        "start": "electron .",
+        "stylus": "node node_modules/stylus/bin/stylus styl/style.styl --out app/css --use url --with \"{limit: false}\" --watch",
+        "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run stylus\" \"npm start\"",
+        "postinstall": "install-app-deps",
+        "pack": "build --dir",
+        "dist": "build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/HoverBaum/BlankUp-Electron.git"
+    },
+    "keywords": [
+        "Markdown",
+        "editor",
+        "Electron"
+    ],
+    "author": "GitHub",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/HoverBaum/BlankUp-Electron/issues"
+    },
+    "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
+    "devDependencies": {
+        "electron-prebuilt": "^1.2.0",
+        "electron-reload": "^1.0.0"
+    },
+    "dependencies": {
+        "BlankUp": "^0.2.0",
+        "choo": "^3.0.0",
+        "font-awesome": "^4.6.3"
+    },
+    "build": {
+        "appId": "de.hendrikwallbaum.blankUpElectron",
+        "app-category-type": "public.app-category.productivity"
+    }
 }
