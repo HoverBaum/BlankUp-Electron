@@ -8,7 +8,9 @@ const dialog = require('electron').dialog
 const menuTemplate = require('./menu')
 
 //Reload for development when things change.
-require('electron-reload')(__dirname);
+if(process.env.DEV) {
+	require('electron-reload')(__dirname);
+}
 
 ipc.on('saveDialog', (event, id, closeEditor) => {
     const options = {

@@ -1,0 +1,26 @@
+{
+  "name": "BlankUp",
+  "version": "1.0.0",
+  "description": "BlankUp wrapped in Electron.",
+  "main": "./main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HoverBaum/BlankUp-Electron.git"
+  },
+  "private": true,
+  "keywords": [
+    "Markdown",
+    "editor"
+  ],
+  "author": "Hendrik Wallbaum <mail@hendrikwallbaum.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HoverBaum/BlankUp-Electron/issues"
+  },
+  "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
+  "dependencies": {
+    "BlankUp": "^0.2.0",
+    "choo": "^3.0.0",
+    "font-awesome": "^4.6.3"
+  }
+}
