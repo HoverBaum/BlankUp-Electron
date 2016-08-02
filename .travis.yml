@@ -34,8 +34,3 @@ script:
 branches:
   except:
   - "/^v\\d+\\.\\d+\\.\\d+$/"
-deploy:
-  provider: releases
-  file: dist
-  on:
-    repo: HoverBaum/BlankUp-Electron
