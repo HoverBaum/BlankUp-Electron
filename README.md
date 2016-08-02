@@ -1,5 +1,7 @@
 # <img src="app/img/BlankUpSymbol.png" width="100"> BlankUp
 
-![Travis Build for Mac and Linux](https://api.travis-ci.org/HoverBaum/BlankUp-Electron.svg)
+BlankUp, Markdown Editor with clarity :+1:
 
-BlankUp: Markdown Editor with clarity :+1:
+![Demo of BlankUp in action.](img/BlankUpDemo.png)
+
+Get the [latest release](https://github.com/HoverBaum/BlankUp-Electron/releases/latest), available for Windows, Mac and Linux.
