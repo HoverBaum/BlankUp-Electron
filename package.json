@@ -10,8 +10,8 @@
     "postinstall": "install-app-deps",
     "pack": "build --dir",
     "dist": "build",
-	"dist-x": "build -ml",
-	"release": "build"
+    "dist-x": "build -ml",
+    "release": "build"
   },
   "private": true,
   "repository": {
@@ -35,6 +35,7 @@
     "electron-reload": "^1.0.0"
   },
   "dependencies": {
+    "choo": "^3.2.0"
   },
   "build": {
     "appId": "de.hendrikwallbaum.blankUpElectron",
