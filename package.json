@@ -35,7 +35,6 @@
     "electron-reload": "^1.0.0"
   },
   "dependencies": {
-    "choo": "^3.2.0"
   },
   "build": {
     "appId": "de.hendrikwallbaum.blankUpElectron",
