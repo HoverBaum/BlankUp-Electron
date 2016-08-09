@@ -1,5 +1,5 @@
 {
-  "name": "BlankUp",
+  "name": "BlankUp-Electron",
   "version": "1.0.0",
   "description": "BlankUp wrapped in Electron.",
   "main": "app/main.js",
@@ -30,12 +30,16 @@
   },
   "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
   "devDependencies": {
+    "concurrently": "^2.2.0",
     "electron-builder": "^5.16.0",
     "electron-prebuilt": "^1.2.0",
     "electron-reload": "^1.0.0",
     "stylus": "^0.54.5"
   },
-  "dependencies": {},
+  "dependencies": {
+    "BlankUp": "^0.3.0",
+    "choo": "^3.2.0"
+  },
   "build": {
     "appId": "de.hendrikwallbaum.blankUpElectron",
     "app-category-type": "public.app-category.productivity"
