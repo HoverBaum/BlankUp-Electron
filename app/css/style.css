@@ -113,8 +113,13 @@ body {
 }
 .editor-container {
   flex-grow: 1;
+  margin-top: 2rem;
 }
 .editor-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
   background-color: #2b333b;
   height: 2rem;
   box-shadow: inset 0px -1px 3px 0px rgba(0,0,0,0.4);
