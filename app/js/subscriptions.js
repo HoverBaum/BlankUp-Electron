@@ -75,6 +75,11 @@ const subscriptions = [
 		})
 	},
 	(send, done) => {
+		ipc.on('showSyntaxExample', () => {
+			send('showSyntaxExample', () => {})
+		})
+	},
+	(send, done) => {
 		ipc.on('newFilePath', (e, filePath, id, closeEditor) => {
 
 			//Check if the user canceled out of choosing a filepath.
