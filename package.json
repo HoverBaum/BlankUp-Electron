@@ -1,12 +1,12 @@
 {
-  "name": "BlankUp",
+  "name": "BlankUp-Electron",
   "version": "1.0.0",
   "description": "BlankUp wrapped in Electron.",
   "main": "app/main.js",
   "scripts": {
     "start": "electron .",
-    "stylus": "node node_modules/stylus/bin/stylus styl/style.styl --out app/css --use url --with \"{limit: false}\" --watch",
-    "dev": "set DEV=true && node ./node_modules/concurrently/src/main.js --kill-others \"npm run stylus\" \"npm start\"",
+    "stylus": "stylus styl/style.styl --out app/css --use url --with \"{limit: false}\" --watch",
+    "dev": "set DEV=true && concurrently --kill-others \"npm run stylus\" \"npm start\"",
     "postinstall": "install-app-deps",
     "pack": "build --dir",
     "dist": "build",
@@ -30,11 +30,15 @@
   },
   "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
   "devDependencies": {
+    "concurrently": "^2.2.0",
     "electron-builder": "^5.16.0",
     "electron-prebuilt": "^1.2.0",
-    "electron-reload": "^1.0.0"
+    "electron-reload": "^1.0.0",
+    "stylus": "^0.54.5"
   },
   "dependencies": {
+    "BlankUp": "^0.3.2",
+    "choo": "^3.2.0"
   },
   "build": {
     "appId": "de.hendrikwallbaum.blankUpElectron",

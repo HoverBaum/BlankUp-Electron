@@ -1,5 +1,7 @@
 const ipc = require('electron').ipcRenderer
 const findCurrentEditorIndex = require('./helper').findCurrentEditorIndex
+const fs = require('fs')
+const path = require('path')
 
 const effects = {
 	saveCurrentEditor: (action, state, send) => {
@@ -125,6 +127,14 @@ const effects = {
 		currentEditor.BlankUp.previewVisible(!currentEditor.preview)
 		const id = currentEditor.id
 		send('togglePreview', id, () => {})
+	},
+	showSyntaxExample: (data, state, send) => {
+		const markdownPath = path.join(__dirname, '..', 'assets', 'syntax.md')
+		const markdown = fs.readFileSync(markdownPath).toString()
+		//const editor = createNewEditor({name: 'Syntax example', markdown})
+		send('addEditor', {name: 'Syntax example', markdown}, () => {})
+	//	send('focusEditor', editor.id, () => {})
+	//	send('setEditorActive', editor.id, () =>{} )
 	}
 }
 

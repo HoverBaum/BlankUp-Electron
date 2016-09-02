@@ -1,4 +1,5 @@
 const dialog = require('electron').dialog
+const electron = require('electron')
 
 let template = [{
     label: 'File',
@@ -81,45 +82,36 @@ let template = [{
             }
         }
     }, {
-		label: 'Focus next',
-		accelerator: 'CmdOrCtrl+Tab',
-		click: function(item, focusedWindow) {
-			if(focusedWindow) {
-				focusedWindow.webContents.send('focusNextEditor')
-			}
-		}
-	}, {
-		label: 'Focus previous',
-		accelerator: 'CmdOrCtrl+Shift+Tab',
-		click: function(item, focusedWindow) {
-			if(focusedWindow) {
-				focusedWindow.webContents.send('focusPreviousEditor')
-			}
-		}
-	}, {
-		label: 'Toggle preview',
-		accelerator: 'CmdOrCtrl+M',
-		click: function(item, focusedWindow) {
-			if(focusedWindow) {
-				focusedWindow.webContents.send('togglePreview')
-			}
-		}
-	}, {
+        label: 'Focus next',
+        accelerator: 'CmdOrCtrl+Tab',
+        click: function(item, focusedWindow) {
+            if (focusedWindow) {
+                focusedWindow.webContents.send('focusNextEditor')
+            }
+        }
+    }, {
+        label: 'Focus previous',
+        accelerator: 'CmdOrCtrl+Shift+Tab',
+        click: function(item, focusedWindow) {
+            if (focusedWindow) {
+                focusedWindow.webContents.send('focusPreviousEditor')
+            }
+        }
+    }, {
+        label: 'Toggle preview',
+        accelerator: 'CmdOrCtrl+M',
+        click: function(item, focusedWindow) {
+            if (focusedWindow) {
+                focusedWindow.webContents.send('togglePreview')
+            }
+        }
+    }, {
         label: 'Developer',
         submenu: [{
             label: 'Reload',
             accelerator: 'CmdOrCtrl+R',
             click: function(item, focusedWindow) {
                 if (focusedWindow) {
-                    // on reload, start fresh and close any old
-                    // open secondary windows
-                    if (focusedWindow.id === 1) {
-                        BrowserWindow.getAllWindows().forEach(function(win) {
-                            if (win.id > 1) {
-                                win.close()
-                            }
-                        })
-                    }
                     focusedWindow.reload()
                 }
             }
@@ -146,6 +138,13 @@ let template = [{
         label: 'Learn More',
         click: function() {
             electron.shell.openExternal('https://github.com/HoverBaum/BlankUp-Electron')
+        }
+    }, {
+        label: 'Syntax example',
+        click: function(item, focusedWindow) {
+            if (focusedWindow) {
+                focusedWindow.webContents.send('showSyntaxExample')
+            }
         }
     }]
 }]
