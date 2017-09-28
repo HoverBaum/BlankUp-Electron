@@ -37,8 +37,6 @@
     "stylus": "^0.54.5"
   },
   "dependencies": {
-    "BlankUp": "^0.3.2",
-    "choo": "^3.2.0"
   },
   "build": {
     "appId": "de.hendrikwallbaum.blankUpElectron",
