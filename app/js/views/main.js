@@ -12,7 +12,7 @@ const mainView = (state, emit) => html`
             data-editor-id="${editor.id}"
             onclick=${(e) => {
               if (/editor-nav__tab-close-icon/g.test(e.target.className)) return
-              emit('activateEditor', editor.id, () => {})
+              emit('editor:activate', editor.id, () => {})
             }}>
             <i class="fa fa-circle-o editor-nav__tab-change-icon" style=${editor.changed ? '' : 'display: none;'}></i>
             ${editor.name.length <= 19 ? editor.name : editor.name.substr(0,16) + '...'}

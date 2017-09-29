@@ -22,7 +22,7 @@ module.exports = function createNewEditor (infos, emitter) {
   newEditor.BlankUp.on('change', (event) => {
     // Fire a change event only if editor was not changed before.
     if (newEditor.changed) return
-    emitter.emit('editorChanged', newEditor.id)
+    emitter.emit('editor:changed', newEditor.id)
   })
   newEditor.editor = div
   document.body.removeChild(div)

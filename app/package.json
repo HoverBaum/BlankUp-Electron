@@ -1,5 +1,5 @@
 {
-  "name": "BlankUp",
+  "name": "BlankUp-Electron-app",
   "version": "1.1.0",
   "description": "BlankUp wrapped in Electron.",
   "main": "./main.js",

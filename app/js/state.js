@@ -1,4 +1,6 @@
 const ipc = require('electron').ipcRenderer
+const path = require('path')
+const fs = require('fs')
 
 const handleIPCMessages = require('./handleIPCMessages')
 
@@ -20,7 +22,7 @@ module.exports = function stateInitializer (state, emitter) {
       if (state.editors.some(editor => editor.filePath === data.filePath)) {
         // Set the editor containing the file active.
         const id = state.editors.find(editor => editor.filePath === data.filePath)
-        emitter.emit('activateEditor', id)
+        emitter.emit('editor:activate', id)
         return
       }
     }
@@ -32,10 +34,10 @@ module.exports = function stateInitializer (state, emitter) {
       markdown: data.markdown
     }, emitter)
     state.editors = state.editors.concat([newEditor])
-    emitter.emit('activateEditor', newEditor.id)
+    emitter.emit('editor:activate', newEditor.id)
   })
 
-  emitter.on('activateEditor', id => {
+  emitter.on('editor:activate', id => {
     state.editors = state.editors.map(editor => {
       if (editor.id === id) {
         editor.active = true
@@ -71,7 +73,7 @@ module.exports = function stateInitializer (state, emitter) {
           }
         })
         const index = editorIndex === 0 ? 1 : editorIndex - 1
-        emitter.emit('activateEditor', state.editors[index].id)
+        emitter.emit('editor:activate', state.editors[index].id)
       } else {
         // If this is the last editor make sure to clear the editorContainer.
         document.querySelector('#editorContainer').innerHTML = ''
@@ -83,11 +85,60 @@ module.exports = function stateInitializer (state, emitter) {
     }
   })
 
-  emitter.on('editorChanged', id => {
+  emitter.on('editor:changed', id => {
     state.editors = state.editors.map(editor => {
       if (editor.id === id) editor.changed = true
       return editor
     })
     emitter.emit('render')
+  })
+
+  emitter.on('editor:focusNext', () => {
+    if (!state.editors || state.editors.length === 0) return
+    const activeIndex = state.editors.findIndex(editor => editor.active)
+    let nextIndex = activeIndex + 1
+    if (nextIndex === state.editors.length) nextIndex = 0
+    const id = state.editors[nextIndex].id
+    emitter.emit('editor:activate', id)
+  })
+
+  emitter.on('editor:focusPrevious', () => {
+    if (!state.editors || state.editors.length === 0) return
+    const activeIndex = state.editors.findIndex(editor => editor.active)
+    const nextIndex = activeIndex === 0 ? state.editors.length - 1 : activeIndex - 1
+    const id = state.editors[nextIndex].id
+    emitter.emit('editor:activate', id)
+  })
+
+  emitter.on('editor:save', data => {
+    const id = data.id
+    const editor = state.editors.find(editor => editor.id === id)
+    if (editor.filePath && editor.filePath !== null) {
+      fs.writeFile(editor.filePath, editor.BlankUp.getMarkdown(), (err) => {
+        if (err) {
+          ipc.send('errorDialog', 'An error occured while saving the file.\n\nPlease try again.')
+          return
+        }
+        emitter.emit('setEditorUnchanged', editor.id, () => {})
+        if (data.closeEditor) {
+          emitter.emit('closeEditor', id, () => {})
+        }
+      })
+    } else {
+
+      // Tell main process that we need a new filePath.
+      ipc.send('saveDialog', id, data.closeEditor)
+    }
+  })
+
+  emitter.on('editor:saveCurrent', () => {
+    const id = state.editors.find(editor => editor.active).id
+    emitter.emit('editor:save', {id})
+  })
+
+  emitter.on('showSyntaxExample', () => {
+    const markdownPath = path.join(__dirname, '..', 'assets', 'syntax.md')
+    const markdown = fs.readFileSync(markdownPath).toString()
+    emitter.emit('newEditor', {name: 'Syntax example', markdown}, () => {})
   })
 }
