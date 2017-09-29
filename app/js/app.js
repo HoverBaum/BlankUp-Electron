@@ -9,7 +9,7 @@ app.use(require('./state'))
 
 app.route('/', require('./views/main'))
 
-if (!module.parent) app.mount('body')
+if (!module.parent) app.mount('#choo')
 else {
   module.exports = app
 }

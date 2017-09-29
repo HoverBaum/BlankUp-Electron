@@ -44,6 +44,14 @@ module.exports = function stateInitializer (state, emitter) {
       }
       return editor
     })
+
+    // Put the active editor into the container.
+    // A seperate container is easier because otherwise rendering
+    // will render the editor as well meaning we have to handle focus on it.
+    const editorContainer = document.querySelector('#editorContainer')
+    editorContainer.innerHTML = ''
+    editorContainer.appendChild(state.editors.find(editor => editor.id === id).editor)
+
     emitter.emit('render')
   })
 

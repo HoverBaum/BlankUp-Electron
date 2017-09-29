@@ -20,7 +20,8 @@ module.exports = function createNewEditor (infos, emitter) {
   newEditor.BlankUp = BlankUp(div)
   newEditor.BlankUp.setMarkdown(infos.markdown || '# Untitled')
   newEditor.BlankUp.on('change', (event) => {
-    console.debug('changes', newEditor.filePath, event)
+    // Fire a change event only if editor was not changed before.
+    if (newEditor.changed) return
     emitter.emit('editorChanged', newEditor.id)
   })
   newEditor.editor = div

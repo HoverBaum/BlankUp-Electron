@@ -11,7 +11,12 @@
 </head>
 
 <body>
-		<p>Loading...</p>
+  
+  <div id="choo">
+    <p>Loading...</p> 
+  </div>
+    
+  <div id="editorContainer" class="editor-container"></div>
 
 </body>
 
@@ -47,7 +52,7 @@
 
 	</script>
 	<script>
-    require('./js/app').mount('body')
+    require('./js/app').mount('#choo')
   </script>
 
 </html>

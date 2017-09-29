@@ -1,7 +1,7 @@
 const html = require('choo/html')
 
 const mainView = (state, emit) => html`
-<body>
+
   <div id="app" class="app">
     <main>
       <nav class="editor-nav" style=${state.editors.length === 0 ? 'display: none;' : ''}>
@@ -31,10 +31,7 @@ const mainView = (state, emit) => html`
     }
     </main>
   </div>
-  <div id="editorContainer" class="editor-container">
-    ${state.editors.find(editor => editor.active) ? state.editors.find(editor => editor.active).editor : ''}
-  </div>
-</body>
+
 `
 
 module.exports = mainView
