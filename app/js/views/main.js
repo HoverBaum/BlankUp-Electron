@@ -18,7 +18,7 @@ const mainView = (state, emit) => html`
             ${editor.name.length <= 19 ? editor.name : editor.name.substr(0,16) + '...'}
             <i class="fa fa-close editor-nav__tab-close-icon"
               onclick=${(e)  => {
-                emit('closeEditor', editor.id, () => {})
+                emit('editor:close', editor.id, () => {})
               }}>
             </i>
           </li>`)}

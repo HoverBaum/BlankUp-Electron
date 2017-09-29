@@ -10,4 +10,8 @@ module.exports = function handleIPCMessages (state, emitter) {
   ipc.on('focusNextEditor', () => emitter.emit('editor:focusNext'))
 
   ipc.on('focusPreviousEditor', () => emitter.emit('editor:focusPrevious'))
+
+  ipc.on('closeCurrentEditor', () => emitter.emit('editor:closeCurrent'))
+
+  ipc.on('togglePreview', () => emitter.emit('editor:togglePreview'))
 }

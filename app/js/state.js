@@ -57,7 +57,7 @@ module.exports = function stateInitializer (state, emitter) {
     emitter.emit('render')
   })
 
-  emitter.on('closeEditor', id => {
+  emitter.on('editor:close', id => {
     // First make sure this editor does not contain unsaved changes.
     const editor = state.editors.find(editor => editor.id === id)
     if (editor.changed) {
@@ -83,6 +83,11 @@ module.exports = function stateInitializer (state, emitter) {
       state.editors = state.editors.filter(editor => editor.id !== id)
       emitter.emit('render')
     }
+  })
+
+  emitter.on('editor:closeCurrent', () => {
+    const currentId = state.editors.find(editor => editor.active === true).id
+    emitter.emit('editor:close', currentId)
   })
 
   emitter.on('editor:changed', id => {
@@ -121,7 +126,7 @@ module.exports = function stateInitializer (state, emitter) {
         }
         emitter.emit('setEditorUnchanged', editor.id, () => {})
         if (data.closeEditor) {
-          emitter.emit('closeEditor', id, () => {})
+          emitter.emit('editor:close', id, () => {})
         }
       })
     } else {
@@ -134,6 +139,12 @@ module.exports = function stateInitializer (state, emitter) {
   emitter.on('editor:saveCurrent', () => {
     const id = state.editors.find(editor => editor.active).id
     emitter.emit('editor:save', {id})
+  })
+
+  emitter.on('editor:togglePreview', () => {
+    const currentEditor = state.editors.find(editor => editor.active)
+    currentEditor.BlankUp.previewVisible(!currentEditor.preview)
+    currentEditor.preview = !currentEditor.preview
   })
 
   emitter.on('showSyntaxExample', () => {
