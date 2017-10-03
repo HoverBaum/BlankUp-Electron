@@ -16,7 +16,7 @@ module.exports = function stateInitializer (state, emitter) {
 
   handleIPCMessages(state, emitter)
 
-  emitter.on('newEditor', data => {
+  emitter.on('editor:new', data => {
     // Only open each file once.
     if (data.filePath) {
       if (state.editors.some(editor => editor.filePath === data.filePath)) {
@@ -116,6 +116,7 @@ module.exports = function stateInitializer (state, emitter) {
   })
 
   emitter.on('editor:save', data => {
+    console.debug('save')
     const id = data.id
     const editor = state.editors.find(editor => editor.id === id)
     if (editor.filePath && editor.filePath !== null) {
@@ -124,13 +125,12 @@ module.exports = function stateInitializer (state, emitter) {
           ipc.send('errorDialog', 'An error occured while saving the file.\n\nPlease try again.')
           return
         }
-        emitter.emit('setEditorUnchanged', editor.id, () => {})
+        emitter.emit('editor:setUnchanged', editor.id, () => {})
         if (data.closeEditor) {
           emitter.emit('editor:close', id, () => {})
         }
       })
     } else {
-
       // Tell main process that we need a new filePath.
       ipc.send('saveDialog', id, data.closeEditor)
     }
@@ -139,6 +139,23 @@ module.exports = function stateInitializer (state, emitter) {
   emitter.on('editor:saveCurrent', () => {
     const id = state.editors.find(editor => editor.active).id
     emitter.emit('editor:save', {id})
+  })
+
+  emitter.on('editor:setFilePath', ({id, filePath}) => {
+    state.editors = state.editors.map(editor => {
+      if (editor.id === id) {
+        editor.filePath = filePath
+      }
+      return editor
+    })
+  })
+
+  emitter.on('editor:setUnchanged', id => {
+    state.editors = state.editors.map(editor => {
+      if (editor.id === id) editor.changed = false
+      return editor
+    })
+    emitter.emit('render')
   })
 
   emitter.on('editor:togglePreview', () => {
@@ -150,6 +167,6 @@ module.exports = function stateInitializer (state, emitter) {
   emitter.on('showSyntaxExample', () => {
     const markdownPath = path.join(__dirname, '..', 'assets', 'syntax.md')
     const markdown = fs.readFileSync(markdownPath).toString()
-    emitter.emit('newEditor', {name: 'Syntax example', markdown}, () => {})
+    emitter.emit('editor:new', {name: 'Syntax example', markdown}, () => {})
   })
 }

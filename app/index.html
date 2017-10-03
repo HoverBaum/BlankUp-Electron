@@ -32,17 +32,6 @@
 				editor.previewVisible(previewState)
 			}
 
-			//Save the file with Ctrl + S
-			if (e.ctrlKey === true && e.keyCode === 19) {
-        console.log('B⬆: Saving file.')
-				if(currentFile === null) return
-				const markdown = editor.getMarkdown()
-				const fs = require('fs')
-				fs.writeFile(currentFile.path, markdown, () => {
-
-				})
-			}
-
 		})
 
 		//When a file is dropped in use that.
