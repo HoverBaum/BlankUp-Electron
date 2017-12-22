@@ -13,6 +13,21 @@
     "dist-x": "build -ml",
     "release": "build"
   },
+  "build": {
+    "appId": "de.hendrikwallbaum.blankUpElectron",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": "snap"
+    },
+    "snap": {
+      "plugs": [
+        "default",
+        "desktop"
+      ]
+    }
+  },
   "private": true,
   "repository": {
     "type": "git",
@@ -31,7 +46,7 @@
   "homepage": "https://github.com/HoverBaum/BlankUp-Electron",
   "devDependencies": {
     "concurrently": "^2.2.0",
-    "electron-builder": "^5.16.0",
+    "electron-builder": "^19.45.5",
     "electron-prebuilt": "^1.2.0",
     "electron-reload": "^1.0.0",
     "stylus": "^0.54.5"
@@ -39,9 +54,5 @@
   "dependencies": {
     "BlankUp": "^0.3.2",
     "choo": "^3.2.0"
-  },
-  "build": {
-    "appId": "de.hendrikwallbaum.blankUpElectron",
-    "app-category-type": "public.app-category.productivity"
   }
 }
